@@ -1,0 +1,49 @@
+//creating users table
+CREATE TABLE users (
+	uid int NOT NULL AUTO_INCREMENT,
+	firstname varchar(255),
+	lastname varchar(255),
+	email varchar(255) UNIQUE NOT NULL, 
+	phone bigint,
+	password varchar(255),
+	gender varchar(255),
+	birthdate date,
+	hobby varchar(255),
+	ans1 varchar(255),
+	ans2 varchar(255),
+	ans3 varchar(255),
+	type int, //0-admin,1-user
+	image mediumblob,
+	PRIMARY KEY (uid)
+);
+
+//creating address table
+CREATE TABLE addresses (
+	aid int NOT NULL AUTO_INCREMENT, 
+	uid int, 
+	home varchar(255), 
+	city varchar(255), 
+	state varchar(255), 
+	country varchar(255), 
+	pincode varchar(255), 
+	PRIMARY KEY (aid), 
+	FOREIGN KEY (uid) REFERENCES users(uid)
+);
+
+//Changing user type
+ALTER TABLE users MODIFY COLUMN type varchar(50);
+
+//Changing values from type column
+UPDATE users SET type="admin" WHERE type="0";
+UPDATE users SET type="user" WHERE type="1";
+
+//Creating trigger
+DELIMITER $$
+CREATE TRIGGER address_delete_on_user_delete 
+BEFORE DELETE 
+ON users FOR EACH ROW
+BEGIN
+	DELETE FROM addresses WHERE uid=OLD.uid;
+END$$
+DELIMITER ;
+
