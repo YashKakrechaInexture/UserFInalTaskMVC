@@ -19,13 +19,19 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<!-- address plugin -->
-	<script src="lib/plugin/cloneData.js"></script>
+	<script type="text/javascript">
+		<#include "lib/plugin/cloneData.js">
+	</script>
 		
 	<!-- address plugin javascript -->
-	<script src="lib/js/AddressPlugin.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		<#include "lib/js/AddressPlugin.js">
+	</script>
 	
 	<!-- custom css -->
-	<link rel="stylesheet" href="lib/css/register.css">
+	<style type="text/css">
+		<#include "lib/css/register.css">
+	</style>
 </head>
 <body>
 	<div class="container">
@@ -520,7 +526,9 @@
 	</div>
 	
 	<!-- custom js -->
-	<script type="text/javascript" src="lib/js/Register.js"></script>
+	<script type="text/javascript">
+		<#include "lib/js/Register.js">
+	</script>
 	
 </body>
 </html>

@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="ISO-8859-1">
@@ -47,8 +46,8 @@
 							</div>
 							<div class="btn-groups">
 								<button type="submit" class="btn btn-success form-control login-btn">Login</button>
-								<a id="signup-link" href="register.jsp">Don't have account?</a>
-								<a id="forgotpass-link" href="resetPassword.jsp">Forgot Password</a>
+								<a id="signup-link" href="register">Don't have account?</a>
+								<a id="forgotpass-link" href="resetPassword">Forgot Password</a>
 							</div>
 						</div>
 					</div>

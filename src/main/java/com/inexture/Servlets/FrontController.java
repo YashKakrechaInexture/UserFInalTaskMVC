@@ -1,11 +1,20 @@
 package com.inexture.Servlets;
 
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.inexture.Beans.UserBean;
 import com.inexture.Services.UserInterface;
@@ -16,6 +25,25 @@ public class FrontController {
 	
 	static final Logger LOG = Logger.getLogger(FrontController.class);
 	
+	@RequestMapping("/")
+	public String index() {
+		return "index";
+	}
+	
+	@RequestMapping("/register")
+	public String register() {
+		return "register";
+	}
+	
+	@RequestMapping("/resetPassword")
+	public String resetPassword() {
+		return "resetPassword";
+	}
+	
+	@RequestMapping("/newPassword")
+	public String newPassword() {
+		return "newPassword";
+	}
 	
 	@RequestMapping("/LoginServlet")
 	public String login(HttpServletRequest request,HttpSession session) {
@@ -105,6 +133,140 @@ public class FrontController {
 		LOG.debug("Redirecting to login page.");
 //		response.sendRedirect("index.jsp");
 		return "index";
+		
+	}
+	
+	@RequestMapping("/AuthEmailServlet")
+	@ResponseBody
+	public String AuthEmailServlet(@RequestParam("email") String email,HttpSession session) {
+		LOG.debug("Inside Auth email servlet.");
+		
+		UserInterface aes = new UserService();
+		if(!aes.checkEmail(email)) {
+			LOG.info("Email exist in table.");
+			return "<span style=\"color:red;\">Email Already Taken.</span>";
+		}else {
+			LOG.info("Email does not exist in table.");
+			return "<span style=\"color:green;\">Email Available.</span>";
+		}
+	}
+	
+	@RequestMapping("/DeleteServlet")
+	public String DeleteServlet(@RequestParam("uid") String suid,HttpSession session) {
+		
+		LOG.debug("Inside Delete Servlet.");
+		
+		int uid = Integer.parseInt(suid);
+		
+		LOG.debug("User deleting service calling.");
+		
+		UserInterface ds = new UserService();
+		ds.deleteUser(uid);
+		
+		LOG.debug("User deleted, redirecting to admin servlet.");
+		
+		return "redirect:AdminServlet";
+		
+	}
+	
+	@RequestMapping("/EditServlet?email={email}")
+	public ModelAndView EditServlet(@PathVariable String email,HttpSession session) {
+		LOG.debug("Inside Edit Servlet.");
+		
+		if(session != null) {
+			
+			LOG.debug("Session not null.");
+			
+			LOG.debug("Get email.");
+			
+			UserBean u = new UserBean(email);
+			
+			UserInterface es = new UserService();
+			es.editProfile(u);
+			
+			LOG.debug("Setting user bean to request attribute.");
+			
+			ModelAndView model = new ModelAndView("register");
+			model.addObject("user", u);
+	        
+	        LOG.debug("Redirecting to edit jsp page.");
+			
+	        return model;
+		}else {
+			LOG.debug("Session is null, redirecting to login page.");
+			ModelAndView model = new ModelAndView("index");
+			return model;
+		}
+	}
+	
+	@RequestMapping("/NewPasswordServlet")
+	public String NewPasswordServlet(@RequestParam("email") String email,
+									@RequestParam("password1") String password1,
+									@RequestParam("password2") String password2,
+									HttpSession session) {
+		
+		LOG.debug("Inside New Password Servlet.");
+		
+//		PrintWriter out = response.getWriter();
+//		response.setContentType("text/html");
+		
+		if(password1==null || password2==null || password1.equals("") || password2.equals("")) {
+//			out.print("<p>Password empty.</p>");
+			return "resetPassword";
+		}else {
+			if(password1.equals(password2)) {
+				
+				LOG.debug("Password is same, reseting password.");
+				
+				UserInterface rps = new UserService();
+				rps.resetPass(email, password1);
+				
+//				out.print("<p>Password changed.</p>");
+				
+				LOG.debug("Redirecting to login page.");
+				return "index";
+			}else {
+				LOG.debug("Password not matched, redirecting to new password page.");
+//				out.print("<p>Password not matched.</p>");
+				return "newPassword";
+			}
+		}
+	}
+
+	@RequestMapping("/ResetPasswordServlet")
+	public ModelAndView ResetPasswordServlet(@RequestParam String email,
+									@RequestParam String birthdate,
+									@RequestParam String que1,
+									@RequestParam String que2,
+									@RequestParam String que3,
+									HttpSession session) {
+		
+		LOG.debug("Inside Reset Password Servlet.");
+		
+//		response.setContentType("text/html");
+//		PrintWriter out = response.getWriter();
+		
+		UserBean u = new UserBean(email,birthdate,que1,que2,que3);
+		
+		LOG.debug("Got data and set in userbean.");
+		
+		UserInterface fu = new UserService();
+		
+		if(fu.findUser(u)) {
+			LOG.debug("User found, redirecting to new password page.");
+			
+			ModelAndView model = new ModelAndView("newPassword");
+			
+			model.addObject("email", email);
+			
+			return model;
+		}else {
+			LOG.debug("No user found, redirecting to reset password page.");
+//			out.print("No user found");
+			ModelAndView model = new ModelAndView("resetPassword");
+			model.addObject("error", "No user found");
+			return model;
+		}
 		
 	}
 }

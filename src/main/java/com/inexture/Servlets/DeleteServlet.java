@@ -17,7 +17,7 @@ import com.inexture.Services.UserService;
  * @author Yash
  *
  */
-@WebServlet("/DeleteServlet")
+//@WebServlet("/DeleteServlet")
 public class DeleteServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(DeleteServlet.class);

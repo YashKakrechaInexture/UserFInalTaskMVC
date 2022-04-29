@@ -21,7 +21,7 @@ import com.inexture.Services.UserService;
  * @author Yash
  *
  */
-@WebServlet("/EditServlet")
+//@WebServlet("/EditServlet")
 public class EditServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(EditServlet.class);

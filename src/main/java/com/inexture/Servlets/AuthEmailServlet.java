@@ -19,7 +19,7 @@ import com.inexture.Services.UserService;
  * @author Yash
  *
  */
-@WebServlet("/AuthEmailServlet")
+//@WebServlet("/AuthEmailServlet")
 public class AuthEmailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(AuthEmailServlet.class);

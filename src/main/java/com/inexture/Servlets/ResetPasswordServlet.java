@@ -21,7 +21,7 @@ import com.inexture.Services.UserService;
  * @author Yash
  *
  */
-@WebServlet("/ResetPasswordServlet")
+//@WebServlet("/ResetPasswordServlet")
 public class ResetPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(ResetPasswordServlet.class);

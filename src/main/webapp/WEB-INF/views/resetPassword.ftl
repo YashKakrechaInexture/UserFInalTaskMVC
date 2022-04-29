@@ -1,6 +1,3 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="ISO-8859-1">
@@ -16,7 +13,9 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 	
 	<!-- custom css -->
-	<link rel="stylesheet" href="lib/css/login.css">
+	<style type="text/css">
+		<#include "lib/css/login.css">
+	</style>
 </head>
 <body>
 	<div class="container">
@@ -25,6 +24,7 @@
 		</div>
 		<form action="ResetPasswordServlet" method="post">
 			<div class="outer-box login-box">
+				<span class="errormsg">${error!""}</span>
 				<div class="row">
 					<div class="col-xs-12 col-sm-12 col-md-6">
 						<div class="form-group">

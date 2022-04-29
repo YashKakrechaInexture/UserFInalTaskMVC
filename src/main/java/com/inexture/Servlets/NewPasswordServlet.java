@@ -20,7 +20,7 @@ import com.inexture.Services.UserService;
  * @author Yash
  *
  */
-@WebServlet("/NewPasswordServlet")
+//@WebServlet("/NewPasswordServlet")
 public class NewPasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(NewPasswordServlet.class);

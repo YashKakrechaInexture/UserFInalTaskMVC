@@ -35,3 +35,6 @@ html,body{
 .ans{
 	margin-top: -7px;
 }
+.errormsg{
+	color: #ff0000;
+}
