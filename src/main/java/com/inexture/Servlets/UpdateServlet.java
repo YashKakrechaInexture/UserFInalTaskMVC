@@ -32,7 +32,7 @@ import com.inexture.Utilities.Validation;
  *
  */
 @MultipartConfig
-@WebServlet("/UpdateServlet")
+//@WebServlet("/UpdateServlet")
 public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(UpdateServlet.class);

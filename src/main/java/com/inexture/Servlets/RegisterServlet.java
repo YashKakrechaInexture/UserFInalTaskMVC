@@ -31,7 +31,7 @@ import com.inexture.Utilities.Validation;
  *
  */
 @MultipartConfig
-@WebServlet("/RegisterServlet")
+//@WebServlet("/RegisterServlet")
 public class RegisterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	static final Logger LOG = Logger.getLogger(RegisterServlet.class);

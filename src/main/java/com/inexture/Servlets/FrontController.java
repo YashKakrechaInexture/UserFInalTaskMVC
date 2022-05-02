@@ -1,8 +1,10 @@
 package com.inexture.Servlets;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -10,16 +12,23 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.inexture.Beans.UserBean;
 import com.inexture.Services.UserInterface;
 import com.inexture.Services.UserService;
 
+@MultipartConfig
 @Controller
 public class FrontController {
 	
@@ -169,8 +178,8 @@ public class FrontController {
 		
 	}
 	
-	@RequestMapping("/EditServlet?email={email}")
-	public ModelAndView EditServlet(@PathVariable String email,HttpSession session) {
+	@RequestMapping("/EditServlet")
+	public ModelAndView EditServlet(@RequestParam String email,HttpSession session) {
 		LOG.debug("Inside Edit Servlet.");
 		
 		if(session != null) {
@@ -268,5 +277,49 @@ public class FrontController {
 			return model;
 		}
 		
+	}
+	
+	@PostMapping("/RegisterServlet")
+	@ResponseBody
+	public String RegisterServlet(@RequestParam("fname") String fname,
+									@RequestParam("lname") String lname,
+									@RequestParam("email") String email,
+									@RequestParam("phone") String phone,
+									@RequestParam String password1,
+									@RequestParam String password2,
+									@RequestParam String gender,
+									@RequestParam String birthdate,
+									@RequestParam String hobby,
+									@RequestParam String que1,
+									@RequestParam String que2,
+									@RequestParam String que3,
+									HttpSession session) {
+		System.out.print(fname+lname+email+phone+password1+password2+gender+birthdate+hobby+que1+que2+que3);
+		return fname;
+	}
+	
+	@RequestMapping(path="/UpdateServlet",method=RequestMethod.GET)
+	@ResponseBody
+	public String UpdateServlet(@RequestParam String fname,
+									@RequestParam String lname,
+									@RequestParam String phone,
+									@RequestParam String gender,
+									@RequestParam String birthdate,
+									@RequestParam String hobby,
+									@RequestParam String que1,
+									@RequestParam String que2,
+									@RequestParam String que3,
+									@RequestParam("inputstream") MultipartFile part,
+									HttpSession session) {
+		
+		InputStream inputstream = null;
+		try {
+			inputstream = part.getInputStream();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		System.out.print(fname+lname+phone+gender+birthdate+hobby+que1+que2+que3+inputstream);
+		return fname+lname+phone+gender+birthdate+hobby+que1+que2+que3+inputstream;
 	}
 }
