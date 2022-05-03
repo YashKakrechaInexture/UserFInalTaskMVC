@@ -69,7 +69,7 @@
 						<td>${user.fname}</td>
 						<td>${user.lname}</td>
 						<td>${user.email}</td>
-						<td>${user.phone}</td>
+						<td>${user.phone?string.computer}</td>
 						<td>${user.gender}</td>
 						<td>${user.birthdate}</td>
 						<td>${user.hobby}</td>

@@ -24,6 +24,8 @@
         <property name="suffix" value=".ftl"/>
     </bean>  
     
+    <bean name="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
+    
     <!-- Provide support for component scanning -->  
     <context:component-scan base-package="com.inexture.Beans" />  
 	<context:component-scan base-package="com.inexture.Servlets" />  

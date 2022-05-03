@@ -3,32 +3,34 @@ package com.inexture.Servlets;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 
-import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
 
 import org.apache.log4j.Logger;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.inexture.Beans.AddressBean;
 import com.inexture.Beans.UserBean;
 import com.inexture.Services.UserInterface;
 import com.inexture.Services.UserService;
+import com.inexture.Utilities.Validation;
 
-@MultipartConfig
 @Controller
 public class FrontController {
 	
@@ -37,6 +39,11 @@ public class FrontController {
 	@RequestMapping("/")
 	public String index() {
 		return "index";
+	}
+	
+	@RequestMapping("/homepage")
+	public String homepage() {
+		return "homepage";
 	}
 	
 	@RequestMapping("/register")
@@ -279,47 +286,174 @@ public class FrontController {
 		
 	}
 	
-	@PostMapping("/RegisterServlet")
-	@ResponseBody
-	public String RegisterServlet(@RequestParam("fname") String fname,
-									@RequestParam("lname") String lname,
-									@RequestParam("email") String email,
-									@RequestParam("phone") String phone,
-									@RequestParam String password1,
+	@PostMapping(path="/RegisterServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public String RegisterServlet(@RequestParam String password1,
 									@RequestParam String password2,
-									@RequestParam String gender,
-									@RequestParam String birthdate,
-									@RequestParam String hobby,
-									@RequestParam String que1,
-									@RequestParam String que2,
-									@RequestParam String que3,
-									HttpSession session) {
-		System.out.print(fname+lname+email+phone+password1+password2+gender+birthdate+hobby+que1+que2+que3);
-		return fname;
-	}
-	
-	@RequestMapping(path="/UpdateServlet",method=RequestMethod.GET)
-	@ResponseBody
-	public String UpdateServlet(@RequestParam String fname,
-									@RequestParam String lname,
-									@RequestParam String phone,
-									@RequestParam String gender,
-									@RequestParam String birthdate,
-									@RequestParam String hobby,
-									@RequestParam String que1,
-									@RequestParam String que2,
-									@RequestParam String que3,
-									@RequestParam("inputstream") MultipartFile part,
-									HttpSession session) {
+									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
+									@RequestParam String home[],
+									@RequestParam String city[],
+									@RequestParam String state[],
+									@RequestParam String country[],
+									@RequestParam String pincode[],
+									@ModelAttribute UserBean user,
+									HttpSession session,
+									HttpServletRequest request,
+									Model model) {
 		
-		InputStream inputstream = null;
+		LOG.debug("Inside Register Servlet.");
+		
+		InputStream inputStream = null;
 		try {
-			inputstream = part.getInputStream();
-		} catch (IOException e) {
-			e.printStackTrace();
+			if(null!=filePart && filePart.getSize()!=0) {
+				inputStream = filePart.getInputStream();
+			}
+		}catch(Exception e) {
+			LOG.error("Something went wrong! Exception : {}",e);
 		}
 		
-		System.out.print(fname+lname+phone+gender+birthdate+hobby+que1+que2+que3+inputstream);
-		return fname+lname+phone+gender+birthdate+hobby+que1+que2+que3+inputstream;
+		ArrayList<AddressBean> address = new ArrayList<AddressBean>();
+		
+		for(int i=0 ; i<home.length ; i++) {
+			AddressBean a = new AddressBean(home[i],city[i],state[i],country[i],pincode[i]);
+			address.add(a);
+		}
+		
+		LOG.debug("Got all the data from register page.");
+		
+		user.setPassword(password1);
+		user.setInputStream(inputStream);
+		user.setAddress(address);
+		
+		UserInterface rs = new UserService();
+		
+		if(null==filePart || filePart.getSize()==0){
+
+			LOG.debug("Image empty.");
+			model.addAttribute("failuser",user);
+			model.addAttribute("errormsg","Image is empty.");
+			
+			return "register";
+			
+		}else if(!Validation.validate(user)) {
+			
+			LOG.debug("Validation failed.");
+			model.addAttribute("failuser",user);
+			model.addAttribute("errormsg","Input Field is empty or too large or type mismatch.");
+			
+			return "register";
+			
+		}else if(!password1.equals(password2)) {
+			
+			LOG.debug("Password not matched.");
+			model.addAttribute("failuser",user);
+			model.addAttribute("errormsg","Password not matched.");
+			
+			return "register";
+			
+		}else {	
+			
+			LOG.debug("Validation passed, creating user.");
+			
+			session=request.getSession(false);  
+			
+			rs.registerUser(user);
+			
+			LOG.debug("User created.");
+			
+			if(session!=null && session.getAttribute("user")!=null){
+				
+				LOG.debug("Session is not null");
+				
+				UserBean olduser = (UserBean)session.getAttribute("user");
+				if(olduser.getType().equals("admin")) {
+					LOG.debug("Admin is true, redirecting to admin servlet.");
+					return "redirect:AdminServlet";
+				}else if(olduser.getType().equals("user")) {
+					LOG.debug("User session is active, redirecting to homepage.");
+					return "redirect:homepage";
+				}else {
+					LOG.error("Session is active but not user or admin found.");
+					return "redirect:register";
+				}
+			}else {
+				LOG.debug("Session is null, redirecting to login page.");
+				return "redirect:index";
+			}
+			
+		}
+	}
+	
+	@PostMapping(path="/UpdateServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public String UpdateServlet(@RequestParam(name="profilepic",required=false) MultipartFile filePart,
+									@RequestParam String home[],
+									@RequestParam String city[],
+									@RequestParam String state[],
+									@RequestParam String country[],
+									@RequestParam String pincode[],
+									@ModelAttribute UserBean user,
+									HttpSession session,
+									HttpServletRequest request,
+									Model model) {
+		
+		LOG.debug("Inside Update Servlet.");
+		
+		ArrayList<AddressBean> address = new ArrayList<AddressBean>();
+		
+		for(int i=0 ; i<home.length ; i++) {
+			AddressBean a = new AddressBean(home[i],city[i],state[i],country[i],pincode[i]);
+			address.add(a);
+		}
+		
+		InputStream inputstream = null;
+		String fileName = null;
+		try {
+			if(null!=filePart && filePart.getSize()!=0) {
+				fileName = filePart.getName();
+				inputstream = filePart.getInputStream();
+			}
+		} catch (IOException e) {
+			LOG.error("Something went wrong! Exception : {}",e);
+		}
+		
+		user.setAddress(address);
+		user.setInputStream(inputstream);
+		
+		UserInterface us = new UserService();
+		
+		if(!Validation.validate(user)) {
+			LOG.debug("Validation failed.");
+			model.addAttribute("errormsg","Input Field is empty.");
+			
+			return "redirect:EditServlet?email="+user.getEmail();
+			
+		}else {
+			
+			LOG.debug("Validation passed, updating User data.");
+			
+			session=request.getSession(false);  
+			
+			if(session!=null) {
+				
+				LOG.debug("Session is not null, updating user.");
+				
+				us.updateUser(user,fileName);
+				
+				UserBean olduser = (UserBean)session.getAttribute("user");
+				
+				if(olduser.getType().equals("user")) {
+					LOG.debug("Session is active and type is user. Redirecting to homepage.");
+					return "redirect:homepage";
+		        }else if(olduser.getType().equals("admin")){
+		        	LOG.debug("Session is active and type is admin. Redirecting to admin servlet.");
+					return "redirect:AdminServlet";
+		        }else {
+		        	LOG.error("Session is active but no user or admin found.");
+		        	return "redirect:index";
+		        }
+			}else {
+				LOG.warn("Session is null, redirecting to login page.");
+				return "redirect:index";
+			}
+		}
 	}
 }

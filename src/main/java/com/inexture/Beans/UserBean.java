@@ -94,6 +94,10 @@ public class UserBean implements Serializable{
 	 */
 	private String type;
 	
+	/**
+	 * Default Constructor of User bean
+	 */
+	public UserBean() {}
 	
 	/**
 	 * Constructor of User bean
@@ -439,4 +443,5 @@ public class UserBean implements Serializable{
 	public String getType() {
 		return this.type;
 	}
+	
 }

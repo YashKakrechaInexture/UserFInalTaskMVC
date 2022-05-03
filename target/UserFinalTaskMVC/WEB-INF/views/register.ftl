@@ -83,7 +83,7 @@
 								<span class="input-group-addon" id="basic-addon0">
 									<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 								</span>
-								<input type="number" name="phone" class="form-control" id="phone" placeholder="1234567890" aria-describedby="basic-addon0" <#if user??>value="${user.phone}"</#if><#if failuser??>value="${failuser.phone}"</#if> required>
+								<input type="number" name="phone" class="form-control" id="phone" placeholder="1234567890" aria-describedby="basic-addon0" <#if user??>value="${user.phone?string.computer}"</#if><#if failuser??>value="${failuser.phone?string.computer}"</#if> required>
 							</div>
 						</div>
 					</div>

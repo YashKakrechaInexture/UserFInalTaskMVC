@@ -33,12 +33,12 @@
 			<div>
 				<h1 class="heading text-center">Edit Page</h1>
 			</div>
-			<form id="submitform" enctype="multipart/form-data" method="get" action="UpdateServlet?email=${user.email}&uid=${user.uid}">
+			<form id="submitform" enctype="multipart/form-data" method="post" action="UpdateServlet?email=${user.email}&uid=${user.uid}">
 		<#else>
 			<div>
 				<h1 class="heading text-center">Registration Page</h1>
 			</div>
-			<form id="submitform" enctype="multipart/form-data" method="get" action="RegisterServlet">
+			<form id="submitform" enctype="multipart/form-data" method="post" action="RegisterServlet">
 		</#if> 
 			<div class="formpart">
 				<div class="row">
@@ -83,7 +83,7 @@
 								<span class="input-group-addon" id="basic-addon0">
 									<span class="glyphicon glyphicon-earphone" aria-hidden="true"></span>
 								</span>
-								<input type="number" name="phone" class="form-control" id="phone" placeholder="1234567890" aria-describedby="basic-addon0" <#if user??>value="${user.phone}"</#if><#if failuser??>value="${failuser.phone}"</#if> required>
+								<input type="number" name="phone" class="form-control" id="phone" placeholder="1234567890" aria-describedby="basic-addon0" <#if user??>value="${user.phone?string.computer}"</#if><#if failuser??>value="${failuser.phone?string.computer}"</#if> required>
 							</div>
 						</div>
 					</div>
