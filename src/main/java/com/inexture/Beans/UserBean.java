@@ -4,12 +4,24 @@ import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 
 /**
  * User Bean stores the all of the information filled by user
  * @author Yash
  *
  */
+@Entity
+@Table(name = "users")
 public class UserBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -17,16 +29,20 @@ public class UserBean implements Serializable{
 	/**
 	 * Store user id from user database table
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int uid;
 	
 	/**
 	 * Stores first name of user
 	 */
+	@Column(name="firstname")
 	private String fname;
 	
 	/**
 	 * Stores last name of user
 	 */
+	@Column(name="lastname")
 	private String lname;
 	
 	/**
@@ -62,21 +78,25 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores security question1's answer of user
 	 */
+	@Column(name="ans1")
 	private String que1;
 	
 	/**
 	 * Stores security question2's answer of user
 	 */
+	@Column(name="ans2")
 	private String que2;
 	
 	/**
 	 * Stores security question3's answer of user
 	 */
+	@Column(name="ans3")
 	private String que3;
 	
 	/**
 	 * Stores all addresses of user in arraylist
 	 */
+	@OneToMany(mappedBy="student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	private ArrayList<AddressBean> address;
 	
 	/**
@@ -417,7 +437,7 @@ public class UserBean implements Serializable{
 	 * @return address - Stores all addresses of user in arraylist
 	 */
 	public ArrayList<AddressBean> getAddress() {
-		return new ArrayList<AddressBean>(this.address);
+		return this.address;
 	}
 	
 	/**
@@ -443,5 +463,14 @@ public class UserBean implements Serializable{
 	public String getType() {
 		return this.type;
 	}
+
+	@Override
+	public String toString() {
+		return "UserBean [uid=" + uid + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", phone="
+				+ phone + ", password=" + password + ", gender=" + gender + ", birthdate=" + birthdate + ", hobby="
+				+ hobby + ", que1=" + que1 + ", que2=" + que2 + ", que3=" + que3 + ", address=" + address
+				+ ", base64Image=" + base64Image + ", type=" + type + "]";
+	}
+	
 	
 }

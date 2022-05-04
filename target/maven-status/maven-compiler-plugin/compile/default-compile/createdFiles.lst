@@ -5,6 +5,7 @@ com\inexture\Servlets\DeleteServlet.class
 com\inexture\Servlets\LoginServlet.class
 com\inexture\Filters\UserFilter.class
 com\inexture\DAO\DaoInterface.class
+com\inexture\DAO\GenericDaoInterface.class
 com\inexture\Services\UserInterface.class
 com\inexture\Servlets\RegisterServlet.class
 com\inexture\Utilities\ShaEncryption.class
@@ -22,5 +23,6 @@ com\inexture\Utilities\Validation.class
 com\inexture\Servlets\UpdateServlet.class
 com\inexture\Filters\LoginFilter.class
 com\inexture\Filters\AdminFilter.class
+com\inexture\DAO\GenericDaoMethods.class
 com\inexture\Filters\HomepageFilter.class
 com\inexture\Servlets\AuthEmailServlet.class

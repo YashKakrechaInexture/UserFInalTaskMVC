@@ -20,6 +20,9 @@ $(document).ready(function(){
 		  removeConfirm: true, 
 		  removeConfirmMessage: 'Are you sure want to delete?',
 		  
+		  // regex change for name
+		  regexName: /(^.+?)([\[\d{1,}\]]{1,})(.+)$/i,
+		  
 		  //removing remove button
 		  afterRemove: function(){
 			var buttons = document.querySelectorAll('.remove-item');

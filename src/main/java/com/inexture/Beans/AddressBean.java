@@ -2,11 +2,20 @@ package com.inexture.Beans;
 
 import java.io.Serializable;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
+
 /**
 * 
 * Address bean, which stores the 1 address of User
 * @author Yash
 */
+@Entity
+@Table(name = "addresses")
 public class AddressBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -14,6 +23,8 @@ public class AddressBean implements Serializable{
 	/**
 	 * Stores address id from database table
 	 */
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int aid;
 	
 	/**
@@ -40,6 +51,11 @@ public class AddressBean implements Serializable{
 	 * Stores pincode of address. String because some countries have Alpha-numeric pincode. exa, Canada, Argentina, etc.
 	 */
 	private String pincode;
+	
+	@ManyToOne
+	private UserBean user;
+	
+	public AddressBean() {}
 	
 	/**
 	 * Constructor of address bean
@@ -172,4 +188,20 @@ public class AddressBean implements Serializable{
 	public String getPincode() {
 		return this.pincode;
 	}
+
+	public UserBean getUser() {
+		return user;
+	}
+
+	public void setUser(UserBean user) {
+		this.user = user;
+	}
+
+	@Override
+	public String toString() {
+		return "AddressBean [aid=" + aid + ", home=" + home + ", city=" + city + ", state=" + state + ", country="
+				+ country + ", pincode=" + pincode + ", user=" + user + "]";
+	}
+	
+	
 }

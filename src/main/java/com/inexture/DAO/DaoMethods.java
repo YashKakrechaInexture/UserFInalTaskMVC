@@ -14,7 +14,7 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-public class DaoMethods implements DaoInterface{
+public class DaoMethods extends GenericDaoMethods implements DaoInterface{
 	static final Logger LOG = Logger.getLogger(DaoMethods.class);
 	
 	@Override
@@ -204,6 +204,8 @@ public class DaoMethods implements DaoInterface{
 				u.setQue3(rs.getString("ans3"));
 				u.setType(rs.getString("type"));
 				u.setInputStream(rs.getBlob("image").getBinaryStream());
+				
+				
 				
 				LOG.debug("User data stored in bean.");
 				

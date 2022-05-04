@@ -8,12 +8,14 @@ C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Ser
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\DAO\AddressDaoMethods.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\DAO\DaoInterface.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Filters\LoginFilter.java
+C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\DAO\GenericDaoInterface.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Services\UserInterface.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Servlets\AuthEmailServlet.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Servlets\LogoutServlet.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Beans\UserBean.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\DAO\DaoMethods.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Beans\AddressBean.java
+C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\DAO\GenericDaoMethods.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Servlets\EditServlet.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Servlets\AdminServlet.java
 C:\Users\Yash\eclipse-workspace2\UserFinalTaskMVC\src\main\java\com\inexture\Servlets\FrontController.java

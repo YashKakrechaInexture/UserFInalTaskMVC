@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
@@ -154,7 +155,7 @@ public class FrontController {
 	
 	@RequestMapping("/AuthEmailServlet")
 	@ResponseBody
-	public String AuthEmailServlet(@RequestParam("email") String email,HttpSession session) {
+	public String AuthEmailServlet(@RequestParam String email,HttpSession session) {
 		LOG.debug("Inside Auth email servlet.");
 		
 		UserInterface aes = new UserService();
@@ -216,9 +217,9 @@ public class FrontController {
 	}
 	
 	@RequestMapping("/NewPasswordServlet")
-	public String NewPasswordServlet(@RequestParam("email") String email,
-									@RequestParam("password1") String password1,
-									@RequestParam("password2") String password2,
+	public String NewPasswordServlet(@RequestParam String email,
+									@RequestParam String password1,
+									@RequestParam String password2,
 									HttpSession session) {
 		
 		LOG.debug("Inside New Password Servlet.");
@@ -290,11 +291,6 @@ public class FrontController {
 	public String RegisterServlet(@RequestParam String password1,
 									@RequestParam String password2,
 									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
-									@RequestParam String home[],
-									@RequestParam String city[],
-									@RequestParam String state[],
-									@RequestParam String country[],
-									@RequestParam String pincode[],
 									@ModelAttribute UserBean user,
 									HttpSession session,
 									HttpServletRequest request,
@@ -311,18 +307,10 @@ public class FrontController {
 			LOG.error("Something went wrong! Exception : {}",e);
 		}
 		
-		ArrayList<AddressBean> address = new ArrayList<AddressBean>();
-		
-		for(int i=0 ; i<home.length ; i++) {
-			AddressBean a = new AddressBean(home[i],city[i],state[i],country[i],pincode[i]);
-			address.add(a);
-		}
-		
 		LOG.debug("Got all the data from register page.");
 		
 		user.setPassword(password1);
 		user.setInputStream(inputStream);
-		user.setAddress(address);
 		
 		UserInterface rs = new UserService();
 		
@@ -385,24 +373,12 @@ public class FrontController {
 	
 	@PostMapping(path="/UpdateServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
 	public String UpdateServlet(@RequestParam(name="profilepic",required=false) MultipartFile filePart,
-									@RequestParam String home[],
-									@RequestParam String city[],
-									@RequestParam String state[],
-									@RequestParam String country[],
-									@RequestParam String pincode[],
 									@ModelAttribute UserBean user,
 									HttpSession session,
 									HttpServletRequest request,
 									Model model) {
 		
 		LOG.debug("Inside Update Servlet.");
-		
-		ArrayList<AddressBean> address = new ArrayList<AddressBean>();
-		
-		for(int i=0 ; i<home.length ; i++) {
-			AddressBean a = new AddressBean(home[i],city[i],state[i],country[i],pincode[i]);
-			address.add(a);
-		}
 		
 		InputStream inputstream = null;
 		String fileName = null;
@@ -415,7 +391,6 @@ public class FrontController {
 			LOG.error("Something went wrong! Exception : {}",e);
 		}
 		
-		user.setAddress(address);
 		user.setInputStream(inputstream);
 		
 		UserInterface us = new UserService();
@@ -456,4 +431,17 @@ public class FrontController {
 			}
 		}
 	}
+	
+//	@PostMapping(path="/UpdateServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+//	@ResponseBody
+//	public String UpdateServlet(@RequestParam(name="profilepic",required=false) MultipartFile filePart,
+//									@ModelAttribute UserBean user,
+//									HttpSession session,
+//									HttpServletRequest request,
+//									Model model) {
+//		
+////		List<AddressBean> address = user.getAddress()==null?null:user.getAddress();
+//		
+//		return user.toString();
+//	}
 }

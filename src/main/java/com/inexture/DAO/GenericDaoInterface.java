@@ -1,25 +1,23 @@
 package com.inexture.DAO;
 
-import com.inexture.Beans.UserBean;
-
 /**
  * Generic Dao class. Basic CRUD (Create, Read, Update, Delete) methods of user.
  * @author Yash
  *
  */
-public interface GenericDaoInterface {
+public interface GenericDaoInterface<T> {
 	
 	/**
 	 * This method creates the user in database table.
 	 * @param user - User bean object
 	 */
-	public void create(UserBean user);
+	public void create(T user);
 	
 	/**
 	 * This method updates the user in database table.
 	 * @param user - User bean object
 	 */
-	public void update(UserBean user);
+	public void update(T user);
 	
 	/**
 	 * This method finds user based on given email, birthdate and security answers in forgot password.
@@ -27,7 +25,7 @@ public interface GenericDaoInterface {
 	 * @return UserBean object - If user found in database table.<br>
 	 * 		   null - If no user found with given information in database table.
 	 */
-	public UserBean read(int uid);
+	public T read(int uid);
 	
 	/**
 	 * It deletes the user from database table, based on given user id

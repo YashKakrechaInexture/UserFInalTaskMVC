@@ -244,13 +244,13 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="home">Home Address</label>
-												<input type="text" name="home" class="form-control" id="home_0" placeholder="123B, ABC Street" value="${address.home}" required>
+												<input type="text" name="address[${address?index}].home" class="form-control" id="home_0" placeholder="123B, ABC Street" value="${address.home}" required>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="city">City</label>
-												<input type="text" name="city" class="form-control" id="city_0" placeholder="Ahmedabad" value="${address.city}" required>
+												<input type="text" name="address[${address?index}].city" class="form-control" id="city_0" placeholder="Ahmedabad" value="${address.city}" required>
 											</div>
 										</div>
 									</div>
@@ -258,13 +258,13 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="state">State</label>
-												<input type="text" name="state" class="form-control" id="state_0" placeholder="Gujarat" value="${address.state}" required>
+												<input type="text" name="address[${address?index}].state" class="form-control" id="state_0" placeholder="Gujarat" value="${address.state}" required>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="country">Country</label>
-												<input type="text" name="country" class="form-control" id="country_0" placeholder="India" value="${address.country}" required>
+												<input type="text" name="address[${address?index}].country" class="form-control" id="country_0" placeholder="India" value="${address.country}" required>
 											</div>
 										</div>
 									</div>
@@ -272,7 +272,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="pincode">Pincode</label>
-												<input type="text" name="pincode" class="form-control" id="pincode_0" placeholder="123456" value="${address.pincode}" required>
+												<input type="text" name="address[${address?index}].pincode" class="form-control" id="pincode_0" placeholder="123456" value="${address.pincode}" required>
 											</div>
 										</div>
 									</div>
@@ -294,13 +294,13 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="home">Home Address</label>
-													<input type="text" name="home" class="form-control" id="home_0" placeholder="123B, ABC Street" value="${address.home}" required>
+													<input type="text" name="address[${address?index}].home" class="form-control" id="home_0" placeholder="123B, ABC Street" value="${address.home}" required>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="city">City</label>
-													<input type="text" name="city" class="form-control" id="city_0" placeholder="Ahmedabad" value="${address.city}" required>
+													<input type="text" name="address[${address?index}].city" class="form-control" id="city_0" placeholder="Ahmedabad" value="${address.city}" required>
 												</div>
 											</div>
 										</div>
@@ -308,13 +308,13 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="state">State</label>
-													<input type="text" name="state" class="form-control" id="state_0" placeholder="Gujarat" value="${address.state}" required>
+													<input type="text" name="address[${address?index}].state" class="form-control" id="state_0" placeholder="Gujarat" value="${address.state}" required>
 												</div>
 											</div>
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="country">Country</label>
-													<input type="text" name="country" class="form-control" id="country_0" placeholder="India" value="${address.country}" required>
+													<input type="text" name="address[${address?index}].country" class="form-control" id="country_0" placeholder="India" value="${address.country}" required>
 												</div>
 											</div>
 										</div>
@@ -322,7 +322,7 @@
 											<div class="col-md-6">
 												<div class="form-group">
 													<label for="pincode">Pincode</label>
-													<input type="text" name="pincode" class="form-control" id="pincode_0" placeholder="123456" value="${address.pincode}" required>
+													<input type="text" name="address[${address?index}].pincode" class="form-control" id="pincode_0" placeholder="123456" value="${address.pincode}" required>
 												</div>
 											</div>
 										</div>
@@ -342,13 +342,13 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="home">Home Address</label>
-												<input type="text" name="home" class="form-control" id="home_0" placeholder="123B, ABC Street" required>
+												<input type="text" name="address[0].home" class="form-control" id="home_0" placeholder="123B, ABC Street" required>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="city">City</label>
-												<input type="text" name="city" class="form-control" id="city_0" placeholder="Ahmedabad" required>
+												<input type="text" name="address[0].city" class="form-control" id="city_0" placeholder="Ahmedabad" required>
 											</div>
 										</div>
 									</div>
@@ -356,13 +356,13 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="state">State</label>
-												<input type="text" name="state" class="form-control" id="state_0" placeholder="Gujarat" required>
+												<input type="text" name="address[0].state" class="form-control" id="state_0" placeholder="Gujarat" required>
 											</div>
 										</div>
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="country">Country</label>
-												<input type="text" name="country" class="form-control" id="country_0" placeholder="India" required>
+												<input type="text" name="address[0].country" class="form-control" id="country_0" placeholder="India" required>
 											</div>
 										</div>
 									</div>
@@ -370,7 +370,7 @@
 										<div class="col-md-6">
 											<div class="form-group">
 												<label for="pincode">Pincode</label>
-												<input type="text" name="pincode" class="form-control" id="pincode_0" placeholder="123456" required>
+												<input type="text" name="address[0].pincode" class="form-control" id="pincode_0" placeholder="123456" required>
 											</div>
 										</div>
 									</div>
