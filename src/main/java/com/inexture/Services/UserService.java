@@ -7,6 +7,9 @@ import java.util.Base64;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import com.inexture.Beans.AddressBean;
 import com.inexture.Beans.UserBean;
@@ -14,6 +17,7 @@ import com.inexture.DAO.AddressDaoInterface;
 import com.inexture.DAO.AddressDaoMethods;
 import com.inexture.DAO.DaoInterface;
 import com.inexture.DAO.DaoMethods;
+import com.inexture.DAO.GenericDaoMethods;
 import com.inexture.Utilities.ShaEncryption;
 
 /**
@@ -21,9 +25,25 @@ import com.inexture.Utilities.ShaEncryption;
  * @author Yash
  *
  */
+@Service
 public class UserService implements UserInterface{
 	static final Logger LOG = Logger.getLogger(UserService.class);
 	
+//	@Autowired
+//	GenericDaoMethods<UserBean> gdm;
+//	
+//	public GenericDaoMethods<UserBean> getGdm() {
+//		return gdm;
+//	}
+//
+//	public void setGdm(GenericDaoMethods<UserBean> gdm) {
+//		this.gdm = gdm;
+//	}
+	
+	@Autowired
+	@Qualifier("GenericDaoMethods")
+	private DaoInterface di;
+
 	@Override
 	public List<UserBean> showUsers(String type) {
 		
@@ -112,7 +132,9 @@ public class UserService implements UserInterface{
 			LOG.info("Password Encrypted.");
 			
 			//adding user details in table
-			dm.register(u);
+//			dm.register(u);
+			
+			di.create(u);
 			
 			LOG.debug("User Registered.");
 			

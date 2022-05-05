@@ -3,14 +3,24 @@
 <beans xmlns="http://www.springframework.org/schema/beans"  
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
     xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:tx="http://www.springframework.org/schema/tx"  
     xmlns:mvc="http://www.springframework.org/schema/mvc"  
     xsi:schemaLocation="  
         http://www.springframework.org/schema/beans  
         http://www.springframework.org/schema/beans/spring-beans.xsd  
         http://www.springframework.org/schema/context  
         http://www.springframework.org/schema/context/spring-context.xsd  
+        http://www.springframework.org/schema/tx  
+        http://www.springframework.org/schema/tx/spring-tx.xsd  
         http://www.springframework.org/schema/mvc  
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">  
+  
+  	<!-- Provide support for component scanning -->  
+    <context:component-scan base-package="com.inexture.Beans,com.inexture.DAO,com.inexture.Services,com.inexture.Servlets" />
+    
+    <!-- <context:annotation-config />   -->
+  	<mvc:annotation-driven/>
+  	<tx:annotation-driven/>
   
     <!-- Freemarker path config -->
     <bean id="freemarkerConfig" class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer">
@@ -26,10 +36,47 @@
     <!-- Multipart Resolver config -->
     <bean name="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver" /> 
     
+    <!-- Data Source config -->
+    <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
+    	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    	<property name="url" value="jdbc:mysql://localhost:3306/userfinaltaskmvc" />
+    	<property name="username" value="root" />
+    	<property name="password" value="Yash@1234" />
+    </bean>
     
+	<!-- Local Session Factory Bean config -->
+	<bean class="org.springframework.orm.hibernate5.LocalSessionFactoryBean" name="factory">
+		<property name="dataSource" ref="ds"></property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.hbm2ddl.auto">update</prop>
+			</props>
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.inexture.Beans.UserBean</value>
+				<value>com.inexture.Beans.AddressBean</value>
+			</list>
+		</property>
+	</bean>
+
+    <!-- Hibernate Template config -->
+    <bean class="org.springframework.orm.hibernate5.HibernateTemplate" name="ht">
+    	<property name="sessionFactory" ref="factory"></property>
+    </bean>
     
-    <!-- Provide support for component scanning -->  
-    <context:component-scan base-package="com.inexture.Beans" />  
-	<context:component-scan base-package="com.inexture.Servlets" />  
+    <!-- Generic dao config -->
+    <bean class="com.inexture.DAO.DaoMethods" name="GenericDaoMethods">
+    	<property name="hibernateTemplate" ref="ht"></property>
+    </bean>
+    
+    <!-- Transaction manager config -->
+    <bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager">
+    	<property name="sessionFactory" ref="factory"></property>
+    </bean>
+    
+
   
 </beans>  

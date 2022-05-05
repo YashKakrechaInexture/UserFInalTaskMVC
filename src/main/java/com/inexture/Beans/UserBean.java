@@ -3,6 +3,7 @@ package com.inexture.Beans;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -96,8 +97,8 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores all addresses of user in arraylist
 	 */
-	@OneToMany(mappedBy="student", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private ArrayList<AddressBean> address;
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private List<AddressBean> address;
 	
 	/**
 	 * Stores profile pic's inputstream of user
@@ -135,7 +136,7 @@ public class UserBean implements Serializable{
 	 * @param address - Stores all addresses of user in arraylist
 	 * @param inputStream - Stores profile pic's inputstream of user
 	 */
-	public UserBean(String fname,String lname,String email,long phone,String password,String gender,String birthdate,String hobby,String que1,String que2,String que3,ArrayList<AddressBean> address,InputStream inputStream){
+	public UserBean(String fname,String lname,String email,long phone,String password,String gender,String birthdate,String hobby,String que1,String que2,String que3,List<AddressBean> address,InputStream inputStream){
 		this.fname = fname;
 		this.lname = lname;
 		this.email = email;
@@ -307,7 +308,7 @@ public class UserBean implements Serializable{
 	 * Setter method of address list of user bean
 	 * @param address - Stores all addresses of user in arraylist
 	 */
-	public void setAddress(ArrayList<AddressBean> address) {
+	public void setAddress(List<AddressBean> address) {
 		this.address = new ArrayList<AddressBean>(address);
 	}
 	
@@ -436,7 +437,7 @@ public class UserBean implements Serializable{
 	 * Getter method of address list of user bean
 	 * @return address - Stores all addresses of user in arraylist
 	 */
-	public ArrayList<AddressBean> getAddress() {
+	public List<AddressBean> getAddress() {
 		return this.address;
 	}
 	

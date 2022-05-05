@@ -444,4 +444,16 @@ public class FrontController {
 //		
 //		return user.toString();
 //	}
+	
+//	@PostMapping(path="/RegisterServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+//	@ResponseBody
+//	public String RegisterServlet(@RequestParam String password1,
+//									@RequestParam String password2,
+//									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
+//									@ModelAttribute UserBean user,
+//									HttpSession session,
+//									HttpServletRequest request,
+//									Model model) {
+//		return user.toString();
+//	}
 }

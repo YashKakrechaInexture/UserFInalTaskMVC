@@ -1,6 +1,6 @@
 package com.inexture.Utilities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.log4j.Logger;
 
@@ -38,7 +38,7 @@ public class Validation {
 		String que1 = u.getQue1();
 		String que2 = u.getQue2();
 		String que3 = u.getQue3();
-		ArrayList<AddressBean> address = u.getAddress();
+		List<AddressBean> address = u.getAddress();
 		
 		LOG.debug("Inside Validation class.");
 		

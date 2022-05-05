@@ -10,7 +10,7 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-public interface DaoInterface {
+public interface DaoInterface extends GenericDaoInterface<UserBean>{
 		
 	/**
 	 * Checks if email is already present in database or not.

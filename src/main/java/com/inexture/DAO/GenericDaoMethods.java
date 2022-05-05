@@ -5,27 +5,37 @@ import java.lang.reflect.Type;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
-public class GenericDaoMethods<T> implements GenericDaoInterface<T>{
+public abstract class GenericDaoMethods<T> implements GenericDaoInterface<T>{
 	
 	private Class<T> type;
 	
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-//	public GenericDaoMethods() {
-//		Type t = getClass().getGenericSuperclass();
-//        ParameterizedType pt = (ParameterizedType) t;
-//        type = (Class) pt.getActualTypeArguments()[0];
-//	}
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public GenericDaoMethods() {
+		Type t = getClass().getGenericSuperclass();
+        ParameterizedType pt = (ParameterizedType) t;
+        type = (Class) pt.getActualTypeArguments()[0];
+	}
 	
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
 	
+	//public GenericDaoMethods() {}
+
+	public GenericDaoMethods(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+
+
 	@Override
+	@Transactional
 	public void create(T user) {
 		this.hibernateTemplate.save(user);
 	}
 	
 	@Override
+	@Transactional
 	public void update(T user) {
 		this.hibernateTemplate.update(user);
 	}
@@ -36,7 +46,17 @@ public class GenericDaoMethods<T> implements GenericDaoInterface<T>{
 	}
 	
 	@Override
+	@Transactional
 	public void delete(int uid) {
 		this.hibernateTemplate.delete(uid);
 	}
+
+	public HibernateTemplate getHibernateTemplate() {
+		return hibernateTemplate;
+	}
+
+	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
+		this.hibernateTemplate = hibernateTemplate;
+	}
+	
 }

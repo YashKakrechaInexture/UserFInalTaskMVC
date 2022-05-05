@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Repository;
 
 import com.inexture.Beans.UserBean;
 
@@ -14,8 +17,12 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-public class DaoMethods extends GenericDaoMethods implements DaoInterface{
+
+public class DaoMethods extends GenericDaoMethods<UserBean> implements DaoInterface{
 	static final Logger LOG = Logger.getLogger(DaoMethods.class);
+	
+	@Autowired
+	private HibernateTemplate hibernateTemplate;
 	
 	@Override
 	public boolean checkUser(String email) {
