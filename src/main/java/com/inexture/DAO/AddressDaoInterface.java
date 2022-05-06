@@ -40,10 +40,9 @@ public interface AddressDaoInterface {
 	public void updateAddress(AddressBean a,int aid);
 	
 	/**
-	 * It deletes the address from database table based on given user id and length - number of rows from below.
-	 * @param uid - user id in table
-	 * @param length - number of rows to delete from below
+	 * It deletes the address from database table based on given address id
+	 * @param aid - address id in table
 	 */
-	public void deleteAddress(int uid,int length);
+	public void deleteAddress(int aid);
 	
 }

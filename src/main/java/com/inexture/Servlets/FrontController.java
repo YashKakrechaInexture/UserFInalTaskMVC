@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,7 +38,10 @@ public class FrontController {
 	
 	static final Logger LOG = Logger.getLogger(FrontController.class);
 	
-	@RequestMapping("/")
+	@Autowired
+	private UserInterface us;
+	
+	@RequestMapping({"/","/index"})
 	public String index() {
 		return "index";
 	}
@@ -72,8 +76,8 @@ public class FrontController {
 		
 		LOG.info("Got email and password from login page");
 		
-		UserInterface ls = new UserService();
-		UserBean u = ls.checkUser(email,password);
+//		UserInterface ls = new UserService();
+		UserBean u = us.checkUser(email,password);
 		
 		LOG.debug("Inside LoginServlet : Email and password has been checked.");
 		
@@ -124,11 +128,11 @@ public class FrontController {
 		
 		LOG.info("Inside Admin Servlet.");
 		
-		UserInterface as = new UserService();
+//		UserInterface as = new UserService();
 		
 		LOG.debug("Adding User list to request attribute.");
 		
-		request.setAttribute("data", as.showUsers("user"));
+		request.setAttribute("data", us.showUsers("user"));
 		
 		LOG.debug("Redirecting to Admin page.");
 		
@@ -158,8 +162,8 @@ public class FrontController {
 	public String AuthEmailServlet(@RequestParam String email,HttpSession session) {
 		LOG.debug("Inside Auth email servlet.");
 		
-		UserInterface aes = new UserService();
-		if(!aes.checkEmail(email)) {
+//		UserInterface aes = new UserService();
+		if(!us.checkEmail(email)) {
 			LOG.info("Email exist in table.");
 			return "<span style=\"color:red;\">Email Already Taken.</span>";
 		}else {
@@ -177,8 +181,8 @@ public class FrontController {
 		
 		LOG.debug("User deleting service calling.");
 		
-		UserInterface ds = new UserService();
-		ds.deleteUser(uid);
+//		UserInterface ds = new UserService();
+		us.deleteUser(uid);
 		
 		LOG.debug("User deleted, redirecting to admin servlet.");
 		
@@ -198,8 +202,8 @@ public class FrontController {
 			
 			UserBean u = new UserBean(email);
 			
-			UserInterface es = new UserService();
-			es.editProfile(u);
+//			UserInterface es = new UserService();
+			u = us.editProfile(u);
 			
 			LOG.debug("Setting user bean to request attribute.");
 			
@@ -235,8 +239,8 @@ public class FrontController {
 				
 				LOG.debug("Password is same, reseting password.");
 				
-				UserInterface rps = new UserService();
-				rps.resetPass(email, password1);
+//				UserInterface rps = new UserService();
+				us.resetPass(email, password1);
 				
 //				out.print("<p>Password changed.</p>");
 				
@@ -267,9 +271,9 @@ public class FrontController {
 		
 		LOG.debug("Got data and set in userbean.");
 		
-		UserInterface fu = new UserService();
+//		UserInterface fu = new UserService();
 		
-		if(fu.findUser(u)) {
+		if(us.findUser(u)) {
 			LOG.debug("User found, redirecting to new password page.");
 			
 			ModelAndView model = new ModelAndView("newPassword");
@@ -312,7 +316,7 @@ public class FrontController {
 		user.setPassword(password1);
 		user.setInputStream(inputStream);
 		
-		UserInterface rs = new UserService();
+//		UserInterface rs = new UserService();
 		
 		if(null==filePart || filePart.getSize()==0){
 
@@ -344,7 +348,7 @@ public class FrontController {
 			
 			session=request.getSession(false);  
 			
-			rs.registerUser(user);
+			us.registerUser(user);
 			
 			LOG.debug("User created.");
 			
@@ -393,7 +397,7 @@ public class FrontController {
 		
 		user.setInputStream(inputstream);
 		
-		UserInterface us = new UserService();
+//		UserInterface us = new UserService();
 		
 		if(!Validation.validate(user)) {
 			LOG.debug("Validation failed.");

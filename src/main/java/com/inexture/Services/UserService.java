@@ -1,11 +1,14 @@
 package com.inexture.Services;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,8 +44,10 @@ public class UserService implements UserInterface{
 //	}
 	
 	@Autowired
-	@Qualifier("GenericDaoMethods")
-	private DaoInterface di;
+	private DaoInterface dm;
+	
+	@Autowired
+	private AddressDaoInterface am;
 
 	@Override
 	public List<UserBean> showUsers(String type) {
@@ -50,7 +55,7 @@ public class UserService implements UserInterface{
 		LOG.debug("Inside ShowUser service.");
 		List<UserBean> list = new ArrayList<>();
 		
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		dm.showUserData(list,type);
 		
 		LOG.debug("List is returning to Servlet.");
@@ -63,9 +68,11 @@ public class UserService implements UserInterface{
 		
 		LOG.debug("Inside Delete User Service");
 		
-		DaoMethods dm = new DaoMethods();
-		dm.deleteUser(uid);
-		
+//		DaoMethods dm = new DaoMethods();
+//		dm.deleteUser(uid);
+		UserBean u = new UserBean();
+		u.setUid(uid);
+		dm.delete(u);
 	}
 	
 	@Override
@@ -73,43 +80,70 @@ public class UserService implements UserInterface{
 		
 		LOG.debug("Inside Update Service.");
 		
-		DaoInterface dm = new DaoMethods();
-		dm.updateUserDetail(u);
+		List<AddressBean> newAddress = u.getAddress();
 		
-		LOG.debug("User updated.");
+		List<Integer> aids = dm.getAids(u.getUid());
 		
-		if(fileName!=null && !fileName.equals("")) {
-			LOG.debug("Updating image.");
-			dm.updateImage(u);
-		}	
-		
-		AddressDaoInterface am = new AddressDaoMethods();
-		
-		List<Integer> aid = am.getAid(u.getUid());
-		
-		List<AddressBean> address = u.getAddress();
-		
-		if(aid.size()<=address.size()) {
-			for(Integer i : aid) {
-				LOG.debug("Updating addresses.");
-				am.updateAddress(address.get(0), i);
-				address.remove(0);
+		for(AddressBean a:newAddress) {
+			if(aids.size()>0) {
+				a.setAid(aids.get(0));
+				aids.remove(0);
 			}
-			for(AddressBean a : address) {
-				LOG.debug("Adding new addresses.");
-				am.addAddress(a, u.getUid());
-			}
-		}else {
-			for(AddressBean a : address) {
-				LOG.debug("Updating addresses.");
-				am.updateAddress(a, aid.get(0));
-				aid.remove(0);
-			}
-			
-			LOG.debug("Deleting extra addresses.");
-			am.deleteAddress(u.getUid(), aid.size());
-			
+			a.setUser(u);
 		}
+		
+		for(int i:aids) {
+			am.deleteAddress(i);
+		}
+		
+		u.setAddress(newAddress);
+		
+		u.setType("user");
+		
+		try {
+			u.setImage(IOUtils.toByteArray(u.getInputStream()));
+		} catch (IOException e) {
+			LOG.fatal("Something went wrong! Exception : "+e);
+		}
+		
+		dm.update(u);
+//		DaoInterface dm = new DaoMethods();
+//		dm.updateUserDetail(u);
+//		
+//		LOG.debug("User updated.");
+//		
+//		if(fileName!=null && !fileName.equals("")) {
+//			LOG.debug("Updating image.");
+//			dm.updateImage(u);
+//		}	
+//		
+//		AddressDaoInterface am = new AddressDaoMethods();
+//		
+//		List<Integer> aid = am.getAid(u.getUid());
+//		
+//		List<AddressBean> address = u.getAddress();
+//		
+//		if(aid.size()<=address.size()) {
+//			for(Integer i : aid) {
+//				LOG.debug("Updating addresses.");
+//				am.updateAddress(address.get(0), i);
+//				address.remove(0);
+//			}
+//			for(AddressBean a : address) {
+//				LOG.debug("Adding new addresses.");
+//				am.addAddress(a, u.getUid());
+//			}
+//		}else {
+//			for(AddressBean a : address) {
+//				LOG.debug("Updating addresses.");
+//				am.updateAddress(a, aid.get(0));
+//				aid.remove(0);
+//			}
+//			
+//			LOG.debug("Deleting extra addresses.");
+//			am.deleteAddress(u.getUid(), aid.size());
+//			
+//		}
 			
 	}
 	
@@ -118,8 +152,8 @@ public class UserService implements UserInterface{
 		
 		LOG.debug("Inside Register Service.");
 		
-		DaoInterface dm = new DaoMethods();
-		AddressDaoInterface am = new AddressDaoMethods();
+//		DaoInterface dm = new DaoMethods();
+//		AddressDaoInterface am = new AddressDaoMethods();
 		//checking if user already exist
 		if(dm.checkUser(u.getEmail())) {
 			
@@ -134,23 +168,39 @@ public class UserService implements UserInterface{
 			//adding user details in table
 //			dm.register(u);
 			
-			di.create(u);
+			List<AddressBean> newAddress = u.getAddress();
+			
+			for(AddressBean a:newAddress) {
+				a.setUser(u);
+			}
+			
+			u.setAddress(newAddress);
+			
+			u.setType("user");
+			
+			try {
+				u.setImage(IOUtils.toByteArray(u.getInputStream()));
+			} catch (IOException e) {
+				LOG.fatal("Something went wrong! Exception : "+e);
+			}
+			
+			dm.create(u);
 			
 			LOG.debug("User Registered.");
 			
 			//getting uid
-			int uid = dm.getUid(u.getEmail());
-			
-			//adding address in table
-			if(uid>0) {
-
-				LOG.debug("Adding all address in database.");
-				
-				//adding all addresses in table
-				for(AddressBean a : u.getAddress()) {
-					am.addAddress(a,uid);
-				}
-			}
+//			int uid = dm.getUid(u.getEmail());
+//			
+//			//adding address in table
+//			if(uid>0) {
+//
+//				LOG.debug("Adding all address in database.");
+//				
+//				//adding all addresses in table
+//				for(AddressBean a : u.getAddress()) {
+//					am.addAddress(a,uid);
+//				}
+//			}
 		}
 	}
 	
@@ -165,7 +215,7 @@ public class UserService implements UserInterface{
 		
 		LOG.info("Password Incrypted.");
 		
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		dm.changePassword(email, encryptedPassword);
 		
 		LOG.info("Password changed");
@@ -181,34 +231,49 @@ public class UserService implements UserInterface{
 		LOG.info("Password Encrypted.");
 		
 		//checking if user/admin exist
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		UserBean u = dm.authUser(email,encryptedPassword);
+		System.out.println(u.getUid());
+		UserBean user = dm.read(u.getUid());
+		
+		user.setInputStream(new ByteArrayInputStream(user.getImage()));
 		
 		LOG.debug("Checked User in Dao.");
 		
-		return u;
+		return user;
 		
 	}
 	
 	@Override
-	public void editProfile(UserBean u) {
+	public UserBean editProfile(UserBean u) {
 		
 		LOG.debug("Inside Edit profile service");
 		
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		dm.getUserInfo(u);
 		
-		AddressDaoInterface am = new AddressDaoMethods();
-		am.getAddressInfo(u);
+//		AddressDaoInterface am = new AddressDaoMethods();
+//		am.getAddressInfo(u);
+		u = dm.read(u.getUid());
+		
+		byte[] initarray = {0,1,2};
+		
+		if(u.getImage()!=null) {
+			initarray = u.getImage();
+		}
+		
+		u.setInputStream(new ByteArrayInputStream(initarray));
 		
 		this.convertToBase64Image(u);
+		
+		return u;
 	}
 	
 	@Override
 	public boolean checkEmail(String email) {
 		LOG.debug("Inside AuthEmail Service.");
 		
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		
 		return dm.checkUser(email);
 		
@@ -217,7 +282,7 @@ public class UserService implements UserInterface{
 	@Override
 	public boolean findUser(UserBean u) {
 		LOG.debug("Inside FindUser Service.");
-		DaoInterface dm = new DaoMethods();
+//		DaoInterface dm = new DaoMethods();
 		return dm.findUser(u);
 	}
 	

@@ -11,7 +11,14 @@ import com.inexture.Beans.UserBean;
  *
  */
 public interface DaoInterface extends GenericDaoInterface<UserBean>{
-		
+	
+	/**
+	 * This method gives all the address' aid's in the list 
+	 * @param uid - User id from user database table
+	 * @return List<Integer> - List of aid from address table
+	 */
+	public List<Integer> getAids(int uid);
+	
 	/**
 	 * Checks if email is already present in database or not.
 	 * @param email - Stores email of user

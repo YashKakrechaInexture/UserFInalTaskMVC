@@ -12,12 +12,26 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 
 /**
  * User Bean stores the all of the information filled by user
+ * @author Yash
+ *
+ */
+/**
+ * @author Yash
+ *
+ */
+/**
+ * @author Yash
+ *
+ */
+/**
  * @author Yash
  *
  */
@@ -101,13 +115,21 @@ public class UserBean implements Serializable{
 	private List<AddressBean> address;
 	
 	/**
+	 * Stores image's byte array for storing in table
+	 */
+	@Lob
+	private byte[] image;
+	
+	/**
 	 * Stores profile pic's inputstream of user
 	 */
-	private transient InputStream inputStream;
+	@Transient
+	private InputStream inputStream;
 	
 	/**
 	 * Stores base64image of profile pic
 	 */
+	@Transient
 	private String base64Image;
 	
 	/**
@@ -465,13 +487,20 @@ public class UserBean implements Serializable{
 		return this.type;
 	}
 
-	@Override
-	public String toString() {
-		return "UserBean [uid=" + uid + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", phone="
-				+ phone + ", password=" + password + ", gender=" + gender + ", birthdate=" + birthdate + ", hobby="
-				+ hobby + ", que1=" + que1 + ", que2=" + que2 + ", que3=" + que3 + ", address=" + address
-				+ ", base64Image=" + base64Image + ", type=" + type + "]";
+	/**
+	 * Getter method of image of user in user bean
+	 * @return image - Stores image's byte array for storing in table
+	 */
+	public byte[] getImage() {
+		return image;
 	}
 	
+	/**
+	 * Setter method of image of user in user bean
+	 * @param image - Stores image's byte array for storing in table
+	 */
+	public void setImage(byte[] image) {
+		this.image = image;
+	}
 	
 }

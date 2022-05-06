@@ -3,6 +3,7 @@ package com.inexture.DAO;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -17,12 +18,57 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-
+@Repository
 public class DaoMethods extends GenericDaoMethods<UserBean> implements DaoInterface{
 	static final Logger LOG = Logger.getLogger(DaoMethods.class);
 	
 	@Autowired
 	private HibernateTemplate hibernateTemplate;
+	
+	@Override
+	public List<Integer> getAids(int uid){
+		List<Integer> aids = new ArrayList<>();
+		
+		Connection conn = DaoConnectionClass.getConnection();
+		PreparedStatement st = null;
+		ResultSet rs = null;
+		
+		try {
+			
+			st = conn.prepareStatement("select aid from addresses where uid=?");
+			
+			st.setInt(1, uid);
+			
+			rs = st.executeQuery();
+			
+			LOG.info("Query executed successfully.");
+			
+			while(rs.next()) {
+				aids.add(rs.getInt(1));
+			}
+			
+			if(rs != null) {
+				rs.close();
+				LOG.info("ResultSet Closed.");
+			}
+			
+		}catch(Exception e) {
+			LOG.fatal("Something went wrong! Exception : "+e);
+		}finally {
+			LOG.debug("Started closing PreparedStatement and ResultSet.");
+			try{
+				if(st != null){
+					st.close();
+					LOG.info("PreparedStatement Closed.");
+				}
+			}catch(Exception ep){
+				LOG.fatal("Something went wrong! Exception : "+ep);
+			}
+			
+		}
+		
+		return aids;
+	}
 	
 	@Override
 	public boolean checkUser(String email) {

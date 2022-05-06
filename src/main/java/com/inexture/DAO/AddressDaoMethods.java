@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.stereotype.Repository;
 
 import com.inexture.Beans.AddressBean;
 import com.inexture.Beans.UserBean;
@@ -16,6 +17,7 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
+@Repository
 public class AddressDaoMethods implements AddressDaoInterface{
 	/**
 	 * Logger
@@ -193,7 +195,7 @@ public class AddressDaoMethods implements AddressDaoInterface{
 	}
 	
 	@Override
-	public void deleteAddress(int uid,int length) {
+	public void deleteAddress(int aid) {
 		
 		LOG.debug("Inside Dao. Deleting Address.");
 		
@@ -202,11 +204,10 @@ public class AddressDaoMethods implements AddressDaoInterface{
 
 		try {
 
-			st = conn.prepareStatement("delete from addresses where uid=? order by aid desc limit ?");
+			st = conn.prepareStatement("delete from addresses where aid=?");
 
-			st.setInt(1, uid);
-			st.setInt(2, length);
-
+			st.setInt(1, aid);
+			
 			st.executeUpdate();
 
 			LOG.info("Query executed successfully.");

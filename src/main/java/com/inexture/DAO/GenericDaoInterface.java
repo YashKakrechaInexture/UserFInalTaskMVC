@@ -25,11 +25,11 @@ public interface GenericDaoInterface<T> {
 	 * @return UserBean object - If user found in database table.<br>
 	 * 		   null - If no user found with given information in database table.
 	 */
-	public T read(int uid);
+	public T read(Object uid);
 	
 	/**
 	 * It deletes the user from database table, based on given user id
 	 * @param uid - user id in table
 	 */
-	public void delete(int uid);
+	public void delete(T user);
 }

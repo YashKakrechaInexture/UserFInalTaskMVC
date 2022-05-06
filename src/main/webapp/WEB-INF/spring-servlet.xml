@@ -16,9 +16,9 @@
         http://www.springframework.org/schema/mvc/spring-mvc.xsd">  
   
   	<!-- Provide support for component scanning -->  
-    <context:component-scan base-package="com.inexture.Beans,com.inexture.DAO,com.inexture.Services,com.inexture.Servlets" />
+    <context:component-scan base-package="com.inexture" />
     
-    <!-- <context:annotation-config />   -->
+    <context:annotation-config />  
   	<mvc:annotation-driven/>
   	<tx:annotation-driven/>
   
@@ -68,9 +68,9 @@
     </bean>
     
     <!-- Generic dao config -->
-    <bean class="com.inexture.DAO.DaoMethods" name="GenericDaoMethods">
+    <!-- <bean class="com.inexture.DAO.DaoMethods" name="GenericDaoMethods">
     	<property name="hibernateTemplate" ref="ht"></property>
-    </bean>
+    </bean> -->
     
     <!-- Transaction manager config -->
     <bean class="org.springframework.orm.hibernate5.HibernateTransactionManager" name="transactionManager">

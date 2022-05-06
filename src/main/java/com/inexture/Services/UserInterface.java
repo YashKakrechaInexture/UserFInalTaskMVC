@@ -61,7 +61,7 @@ public interface UserInterface {
 	 * It gets the all the user data and address data from dao, if you set the email in userbean object.
 	 * @param u - user bean object
 	 */
-	public void editProfile(UserBean u);
+	public UserBean editProfile(UserBean u);
 	
 	/**
 	 * It checks if email is already exist in the database table or not.

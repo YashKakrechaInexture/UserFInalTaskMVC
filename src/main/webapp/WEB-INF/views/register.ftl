@@ -113,6 +113,8 @@
 							</div>
 						</div>
 					</div>
+				<#else>
+					<input type="hidden" name="password" value="${user.password}">
 				</#if>
 				<div class="row">
 					<div class="col-md-6">
@@ -187,11 +189,11 @@
 						<div class="form-group">
 							<label for="profilepic">Profile Pic</label>
 							<#if user??>
-								<input type="file" id="profilepic" name="profilepic" accept="image/*" value="${user.inputStream}">
-								<img src="data:image/jpg;base64,${user.base64Image}" id="imgPreview" width="200" height="200"/>
+								<input type="file" id="profilepic" name="profilepic" accept="image/*" <#if user.inputStream??>value="${user.inputStream}"</#if>>
+								<img <#if user.base64Image??>src="data:image/jpg;base64,${user.base64Image}"<#else>src=""</#if> id="imgPreview" width="200" height="200"/>
 							<#elseif failuser??>
-								<input type="file" id="profilepic" name="profilepic" accept="image/*" value="${failuser.inputStream}" required>
-								<img src="data:image/jpg;base64,${failuser.base64Image}" id="imgPreview" width="200" height="200"/>
+								<input type="file" id="profilepic" name="profilepic" accept="image/*" <#if failuser.inputStream??>value="${failuser.inputStream}"</#if> required>
+								<img <#if failuser.base64Image??>src="data:image/jpg;base64,${failuser.base64Image}"<#else>src=""</#if> id="imgPreview" width="200" height="200"/>
 							<#else>
 								<input type="file" id="profilepic" name="profilepic" accept="image/*" required>
 								<img src="" id="imgPreview" width="200" height="200"/>
@@ -235,7 +237,7 @@
 			</div>
 			<div>
 				<div id="main-container">
-					<#if user??>
+					<#if user?? && user.address??>
 						<#list user.address as address>
 							<div class="container-item card">
 								<h4>Address Fields</h4>
@@ -285,7 +287,7 @@
 							</div>
 						</#list>
 					<#else>
-						<#if failuser??>
+						<#if failuser?? && failuser.address??>
 							<#list failuser.address as address>
 								<div class="container-item card">
 									<h4>Address Fields</h4>
