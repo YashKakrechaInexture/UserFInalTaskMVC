@@ -66,6 +66,13 @@ public class FrontController {
 		return "newPassword";
 	}
 	
+	@RequestMapping("/aids")
+	@ResponseBody
+	public String aids(@RequestParam String email) {
+		us.getaid(email);
+		return "aids";
+	}
+	
 	@RequestMapping("/LoginServlet")
 	public String login(HttpServletRequest request,HttpSession session) {
 		
@@ -200,10 +207,10 @@ public class FrontController {
 			
 			LOG.debug("Get email.");
 			
-			UserBean u = new UserBean(email);
+//			UserBean u = new UserBean(email);
 			
 //			UserInterface es = new UserService();
-			u = us.editProfile(u);
+			UserBean u = us.editProfile(email);
 			
 			LOG.debug("Setting user bean to request attribute.");
 			

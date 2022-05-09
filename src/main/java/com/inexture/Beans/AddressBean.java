@@ -10,6 +10,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 /**
 * 
 * Address bean, which stores the 1 address of User
@@ -17,6 +20,8 @@ import javax.persistence.Table;
 */
 @Entity
 @Table(name = "addresses")
+@Component
+@Scope("prototype")
 public class AddressBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;

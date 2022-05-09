@@ -49,14 +49,23 @@ public class UserService implements UserInterface{
 	@Autowired
 	private AddressDaoInterface am;
 
+	@Autowired
+	UserBean user;
+	
+	@Override
+	public void getaid(String email) {
+//		dm.getAids(115);
+//		dm.checkUser(email);
+	}
+	
 	@Override
 	public List<UserBean> showUsers(String type) {
 		
 		LOG.debug("Inside ShowUser service.");
-		List<UserBean> list = new ArrayList<>();
+		List<UserBean> list = dm.showUserData(type);
 		
 //		DaoInterface dm = new DaoMethods();
-		dm.showUserData(list,type);
+		
 		
 		LOG.debug("List is returning to Servlet.");
 		
@@ -70,9 +79,9 @@ public class UserService implements UserInterface{
 		
 //		DaoMethods dm = new DaoMethods();
 //		dm.deleteUser(uid);
-		UserBean u = new UserBean();
-		u.setUid(uid);
-		dm.delete(u);
+		
+		user.setUid(uid);
+		dm.delete(user);
 	}
 	
 	@Override
@@ -155,7 +164,7 @@ public class UserService implements UserInterface{
 //		DaoInterface dm = new DaoMethods();
 //		AddressDaoInterface am = new AddressDaoMethods();
 		//checking if user already exist
-		if(dm.checkUser(u.getEmail())) {
+		if(dm.getUid(u.getEmail())==0) {
 			
 			LOG.debug("No email found, registering to database.");
 			
@@ -245,28 +254,28 @@ public class UserService implements UserInterface{
 	}
 	
 	@Override
-	public UserBean editProfile(UserBean u) {
+	public UserBean editProfile(String email) {
 		
 		LOG.debug("Inside Edit profile service");
 		
 //		DaoInterface dm = new DaoMethods();
-		dm.getUserInfo(u);
-		
+//		dm.getUserInfo(u);
+		int uid = dm.getUid(email);
 //		AddressDaoInterface am = new AddressDaoMethods();
 //		am.getAddressInfo(u);
-		u = dm.read(u.getUid());
+		user = dm.read(uid);
 		
 		byte[] initarray = {0,1,2};
 		
-		if(u.getImage()!=null) {
-			initarray = u.getImage();
+		if(user.getImage()!=null) {
+			initarray = user.getImage();
 		}
 		
-		u.setInputStream(new ByteArrayInputStream(initarray));
+		user.setInputStream(new ByteArrayInputStream(initarray));
 		
-		this.convertToBase64Image(u);
+		user.setBase64Image( this.convertToBase64Image(user.getInputStream()) );
 		
-		return u;
+		return user;
 	}
 	
 	@Override
@@ -275,7 +284,7 @@ public class UserService implements UserInterface{
 		
 //		DaoInterface dm = new DaoMethods();
 		
-		return dm.checkUser(email);
+		return dm.getUid(email)==0;
 		
 	}
 	
@@ -287,9 +296,9 @@ public class UserService implements UserInterface{
 	}
 	
 	@Override
-	public void convertToBase64Image(UserBean u) {
-		InputStream inputStream = u.getInputStream();
+	public String convertToBase64Image(InputStream inputStream) {
 		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+		String base64Image = "";
 		try {
 			
 			byte[] buffer = new byte[4096];
@@ -301,9 +310,7 @@ public class UserService implements UserInterface{
 	         
 	        byte[] imageBytes = outputStream.toByteArray();
 	        
-	        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-	        
-	        u.setBase64Image(base64Image);
+	        base64Image = Base64.getEncoder().encodeToString(imageBytes);
 	        
 	        LOG.debug("Converted image to base64image");
 	        
@@ -326,5 +333,6 @@ public class UserService implements UserInterface{
 				LOG.fatal("Something went wrong! Exception : "+ex);
 			}
 		}
+		return base64Image;
 	}
 }

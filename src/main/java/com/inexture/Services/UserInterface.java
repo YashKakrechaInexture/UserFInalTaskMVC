@@ -1,5 +1,6 @@
 package com.inexture.Services;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.inexture.Beans.UserBean;
@@ -12,6 +13,7 @@ import com.inexture.Beans.UserBean;
  */
 public interface UserInterface {
 	
+	public void getaid(String email);
 	/**
 	 * It calls the User's list dao based on the given type from database table.
 	 * @param type - type of user (admin,user)
@@ -58,10 +60,10 @@ public interface UserInterface {
 	public UserBean checkUser(String email,String password);
 	
 	/**
-	 * It gets the all the user data and address data from dao, if you set the email in userbean object.
-	 * @param u - user bean object
+	 * It gets the all the user data and address data from dao, based on given email
+	 * @param email - email address of user
 	 */
-	public UserBean editProfile(UserBean u);
+	public UserBean editProfile(String email);
 	
 	/**
 	 * It checks if email is already exist in the database table or not.
@@ -83,5 +85,5 @@ public interface UserInterface {
 	 * This method converts input stream image to base64 image. It accepts UserBean object with input stream variable filled.
 	 * @param u - User Bean object
 	 */
-	public void convertToBase64Image(UserBean u);
+	public String convertToBase64Image(InputStream inputStream);
 }

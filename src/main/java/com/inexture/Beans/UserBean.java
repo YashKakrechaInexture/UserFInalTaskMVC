@@ -17,26 +17,19 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
+
 
 /**
  * User Bean stores the all of the information filled by user
  * @author Yash
  *
  */
-/**
- * @author Yash
- *
- */
-/**
- * @author Yash
- *
- */
-/**
- * @author Yash
- *
- */
 @Entity
 @Table(name = "users")
+@Component
+@Scope("prototype")
 public class UserBean implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
