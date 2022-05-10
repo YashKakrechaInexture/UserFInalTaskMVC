@@ -58,7 +58,7 @@ public class AdminFilter implements Filter {
 		HttpSession session=req.getSession(false); 
 		if(session==null || session.getAttribute("user")==null) {
 			LOG.debug("Session is not created, redirecting to LOGin page.");
-			res.sendRedirect("index.ftl");
+			res.sendRedirect("index");
 		}else {
 			UserBean u = (UserBean)session.getAttribute("user");
 			if(u.getType().equals("admin")) {
@@ -66,10 +66,10 @@ public class AdminFilter implements Filter {
 				chain.doFilter(request, response);
 			}else if(u.getType().equals("user")) {
 				LOG.debug("Session is active, and user is trying to access AdminServlet, redirecting to Homepage.");
-				res.sendRedirect("homepage.ftl");
+				res.sendRedirect("homepage");
 			}else {
 				LOG.error("Session is active, but its not admin or user. Redirecting to LOGin page.");
-				res.sendRedirect("index.ftl");
+				res.sendRedirect("index");
 			}
 		}
 	}

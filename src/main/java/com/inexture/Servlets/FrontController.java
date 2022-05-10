@@ -2,17 +2,9 @@ package com.inexture.Servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Part;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,10 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.inexture.Beans.AddressBean;
 import com.inexture.Beans.UserBean;
 import com.inexture.Services.UserInterface;
-import com.inexture.Services.UserService;
 import com.inexture.Utilities.Validation;
 
 @Controller
@@ -62,16 +52,22 @@ public class FrontController {
 	}
 	
 	@RequestMapping("/newPassword")
-	public String newPassword() {
-		return "newPassword";
+	public String newPassword(@RequestParam String email,Model model) {
+		if(email==null || email=="") {
+			model.addAttribute("error", "No user found");
+			return "resetPassword";
+		}else {
+			model.addAttribute("email", email);
+			return "newPassword";
+		}
 	}
 	
-	@RequestMapping("/aids")
-	@ResponseBody
-	public String aids(@RequestParam String email) {
-		us.getaid(email);
-		return "aids";
-	}
+//	@RequestMapping("/aids")
+//	@ResponseBody
+//	public String aids(@RequestParam String email) {
+//		us.getaid(email);
+//		return "aids";
+//	}
 	
 	@RequestMapping("/LoginServlet")
 	public String login(HttpServletRequest request,HttpSession session) {
@@ -82,15 +78,10 @@ public class FrontController {
 		String password = request.getParameter("password");	
 		
 		LOG.info("Got email and password from login page");
-		
-//		UserInterface ls = new UserService();
+
 		UserBean u = us.checkUser(email,password);
 		
 		LOG.debug("Inside LoginServlet : Email and password has been checked.");
-		
-//		PrintWriter out = response.getWriter();
-		
-//		response.setContentType("text/html");
 		
 		if(u != null) {
 			
@@ -109,13 +100,13 @@ public class FrontController {
 				
 				LOG.info("User is normal user, redirecting to user home page.");
 				//response.sendRedirect("homepage.jsp");
-				return "homepage";
+				return "redirect:homepage";
 				
 			}else {
 				
 				LOG.error("User found but its not user or admin");
 				//response.sendRedirect("index.jsp");
-				return "index";
+				return "redirect:index";
 			}
 			
 		}else{
@@ -124,14 +115,14 @@ public class FrontController {
 //			out.print("Enter Correct Details");
 //			rd = request.getRequestDispatcher("index.jsp");
 //			rd.include(request, response);
-			return "index";
+			return "redirect:index";
 		}
 		
 		//return "viewpage3"+email+" "+password;
 	}
 	
 	@RequestMapping("/AdminServlet")
-	public String admin(HttpServletRequest request,HttpSession session) {
+	public String admin(HttpServletRequest request,HttpSession session,Model model) {
 		
 		LOG.info("Inside Admin Servlet.");
 		
@@ -139,7 +130,8 @@ public class FrontController {
 		
 		LOG.debug("Adding User list to request attribute.");
 		
-		request.setAttribute("data", us.showUsers("user"));
+		model.addAttribute("data", us.showUsers("user"));
+//		request.setAttribute("data", us.showUsers("user"));
 		
 		LOG.debug("Redirecting to Admin page.");
 		
@@ -231,6 +223,7 @@ public class FrontController {
 	public String NewPasswordServlet(@RequestParam String email,
 									@RequestParam String password1,
 									@RequestParam String password2,
+									Model model,
 									HttpSession session) {
 		
 		LOG.debug("Inside New Password Servlet.");
@@ -246,27 +239,21 @@ public class FrontController {
 				
 				LOG.debug("Password is same, reseting password.");
 				
-//				UserInterface rps = new UserService();
 				us.resetPass(email, password1);
-				
-//				out.print("<p>Password changed.</p>");
 				
 				LOG.debug("Redirecting to login page.");
 				return "index";
 			}else {
 				LOG.debug("Password not matched, redirecting to new password page.");
-//				out.print("<p>Password not matched.</p>");
+				model.addAttribute("email", email);
+				model.addAttribute("error", "Password not matched");
 				return "newPassword";
 			}
 		}
 	}
 
 	@RequestMapping("/ResetPasswordServlet")
-	public ModelAndView ResetPasswordServlet(@RequestParam String email,
-									@RequestParam String birthdate,
-									@RequestParam String que1,
-									@RequestParam String que2,
-									@RequestParam String que3,
+	public ModelAndView ResetPasswordServlet(@ModelAttribute UserBean u,
 									HttpSession session) {
 		
 		LOG.debug("Inside Reset Password Servlet.");
@@ -274,7 +261,7 @@ public class FrontController {
 //		response.setContentType("text/html");
 //		PrintWriter out = response.getWriter();
 		
-		UserBean u = new UserBean(email,birthdate,que1,que2,que3);
+//		UserBean u = new UserBean(email,birthdate,que1,que2,que3);
 		
 		LOG.debug("Got data and set in userbean.");
 		
@@ -283,9 +270,9 @@ public class FrontController {
 		if(us.findUser(u)) {
 			LOG.debug("User found, redirecting to new password page.");
 			
-			ModelAndView model = new ModelAndView("newPassword");
+			ModelAndView model = new ModelAndView("redirect:newPassword");
 			
-			model.addObject("email", email);
+			model.addObject("email", u.getEmail());
 			
 			return model;
 		}else {
@@ -403,8 +390,6 @@ public class FrontController {
 		}
 		
 		user.setInputStream(inputstream);
-		
-//		UserInterface us = new UserService();
 		
 		if(!Validation.validate(user)) {
 			LOG.debug("Validation failed.");

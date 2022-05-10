@@ -13,27 +13,6 @@ import com.inexture.Beans.UserBean;
 public interface DaoInterface extends GenericDaoInterface<UserBean>{
 	
 	/**
-	 * This method gives all the address' aid's in the list 
-	 * @param uid - User id from user database table
-	 * @return List<Integer> - List of aid from address table
-	 */
-	public List<Integer> getAids(int uid);
-	
-	/**
-	 * Checks if email is already present in database or not.
-	 * @param email - Stores email of user
-	 * @return true - If no user found in mysql database table.<br>
-	 * 		   false - If user found in mysql database table.
-	 */
-//	public boolean checkUser(String email);
-	
-	/**
-	 * This method registers all the details accept address in the database table
-	 * @param u - User bean object
-	 */
-//	public void register(UserBean u);
-	
-	/**
 	 * It returns user id from the table related to the email given, if no user found then returns 0.
 	 * @param email - Stores email of user
 	 * @return uid - User id from user database table<br>
@@ -60,30 +39,6 @@ public interface DaoInterface extends GenericDaoInterface<UserBean>{
 	public List<UserBean> showUserData(String type);
 	
 	/**
-	 * It accepts empty userbean, with one email variable filled. and it fills the data from table based on given email.
-	 * @param u - user bean object
-	 */
-//	public void getUserInfo(UserBean u);
-	
-	/**
-	 * It accepts userbean with image inputstream and email filled. and this method fills image input stream to the given email in table.
-	 * @param u - user bean object
-	 */
-//	public void updateImage(UserBean u);
-	
-	/**
-	 * This method updates all the user data accept image and address.
-	 * @param u - user bean object
-	 */
-//	public void updateUserDetail(UserBean u);
-	
-	/**
-	 * It deletes the user from database table, based on given user id
-	 * @param uid - user id in table
-	 */
-//	public void deleteUser(int uid);
-	
-	/**
 	 * This method finds user based on given email, birthdate and security answers in forgot password.
 	 * @param u - user bean objects
 	 * @return false - If user found in database table.<br>
@@ -91,10 +46,4 @@ public interface DaoInterface extends GenericDaoInterface<UserBean>{
 	 */
 	public boolean findUser(UserBean u);
 	
-	/**
-	 * This method changes password to the provided email address in database table.
-	 * @param email - email of the user
-	 * @param Password - new password of the user
-	 */
-	public void changePassword(String email,String password);
 }

@@ -38,7 +38,7 @@
     
     <!-- Data Source config -->
     <bean class="org.springframework.jdbc.datasource.DriverManagerDataSource" name="ds">
-    	<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+    	<property name="driverClassName" value="com.mysql.cj.jdbc.Driver" />
     	<property name="url" value="jdbc:mysql://localhost:3306/userfinaltaskmvc" />
     	<property name="username" value="root" />
     	<property name="password" value="Yash@1234" />

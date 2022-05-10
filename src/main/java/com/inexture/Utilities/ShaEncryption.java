@@ -7,8 +7,6 @@ import java.security.NoSuchAlgorithmException;
 
 import org.apache.log4j.Logger;
 
-import com.inexture.Servlets.AdminServlet;
-
 /**
  * This class has passwordEnccryption method which returns encrypted password. It accepts string password and
  * returns SHA256 encrypted password.
@@ -16,7 +14,7 @@ import com.inexture.Servlets.AdminServlet;
  *
  */
 public class ShaEncryption {
-	static final Logger LOG = Logger.getLogger(AdminServlet.class);
+	static final Logger LOG = Logger.getLogger(ShaEncryption.class);
 	
 	/**
 	 * This method converts not encrypted password to sha256 encrypted password.

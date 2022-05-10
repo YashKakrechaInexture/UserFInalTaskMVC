@@ -66,6 +66,7 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores password of user
 	 */
+	@Column(updatable = true)
 	private String password;
 	
 	/**
@@ -494,6 +495,14 @@ public class UserBean implements Serializable{
 	 */
 	public void setImage(byte[] image) {
 		this.image = image;
+	}
+
+	@Override
+	public String toString() {
+		return "UserBean [uid=" + uid + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", phone="
+				+ phone + ", password=" + password + ", gender=" + gender + ", birthdate=" + birthdate + ", hobby="
+				+ hobby + ", que1=" + que1 + ", que2=" + que2 + ", que3=" + que3 + ", type="
+				+ type + "]";
 	}
 	
 }

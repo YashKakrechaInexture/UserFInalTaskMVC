@@ -20,7 +20,7 @@ import org.apache.log4j.Logger;
  * @author Yash
  *
  */
-@WebFilter(urlPatterns = {"/homepage.jsp","/EditServlet","/UpdateServlet","/AdminServlet"})
+@WebFilter(urlPatterns = {"/homepage","/EditServlet","/UpdateServlet","/AdminServlet"})
 public class UserFilter implements Filter {
 	static final Logger LOG = Logger.getLogger(UserFilter.class);
     /**

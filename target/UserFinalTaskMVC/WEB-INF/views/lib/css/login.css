@@ -3,7 +3,7 @@
 html,body{
 	margin: 0px;
 	padding: 0px;
-	background-image: url("/UserFinalTask/lib/images/bg.jpg");
+	background-image: url("/UserFinalTaskMVC/lib/images/bg.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
 }

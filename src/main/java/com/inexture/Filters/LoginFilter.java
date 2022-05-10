@@ -27,7 +27,7 @@ public class LoginFilter implements Filter {
 	/**
 	 * Logger
 	 */
-	static final Logger LOG = Logger.getLogger(UserFilter.class);
+	static final Logger LOG = Logger.getLogger(LoginFilter.class);
     
     /**
      * Default constructor. 

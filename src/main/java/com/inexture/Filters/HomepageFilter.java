@@ -24,7 +24,7 @@ import com.inexture.Beans.UserBean;
  */
 @WebFilter(urlPatterns = {"/homepage.jsp"})
 public class HomepageFilter implements Filter {
-	static final Logger LOG = Logger.getLogger(UserFilter.class);
+	static final Logger LOG = Logger.getLogger(HomepageFilter.class);
     
     /**
      * Default constructor. 
