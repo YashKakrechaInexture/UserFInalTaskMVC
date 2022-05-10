@@ -66,7 +66,6 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores password of user
 	 */
-	@Column(updatable = true)
 	private String password;
 	
 	/**
