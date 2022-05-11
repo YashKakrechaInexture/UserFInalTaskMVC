@@ -16,6 +16,14 @@ import javax.persistence.Lob;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.Valid;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -45,22 +53,29 @@ public class UserBean implements Serializable{
 	 * Stores first name of user
 	 */
 	@Column(name="firstname")
+	@NotEmpty(message = "Firstname is required.")
+//	@Pattern(regexp = "[a-zA-Z]+",message = "Firstname should not contain numbers.")
 	private String fname;
 	
 	/**
 	 * Stores last name of user
 	 */
 	@Column(name="lastname")
+	@NotEmpty(message = "Lastname is required.")
+//	@Pattern(regexp = "[a-zA-Z]+",message = "Lastname should not contain numbers.")
 	private String lname;
 	
 	/**
 	 * Stores email of user
 	 */
+	@NotEmpty(message = "Email is required.")
+	@Email(message = "Email is not valid.")
 	private String email;
 	
 	/**
 	 * Stores phone number of user
 	 */
+//	@NotEmpty(message = "Phone is required.")
 	private long phone;
 	
 	/**
@@ -71,40 +86,47 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores gender of user
 	 */
+	@NotEmpty(message = "Gender is required.")
 	private String gender;
 	
 	/**
 	 * Stores birthdate of user
 	 */
+	@NotEmpty(message = "Birthdate is required.")
 	private String birthdate;
 	
 	/**
 	 * Stores hobbies of user 
 	 */
+	@NotEmpty(message = "Hobby is required.")
 	private String hobby;
 	
 	/**
 	 * Stores security question1's answer of user
 	 */
 	@Column(name="ans1")
+	@NotEmpty(message = "Ans1 is required.")
 	private String que1;
 	
 	/**
 	 * Stores security question2's answer of user
 	 */
 	@Column(name="ans2")
+	@NotEmpty(message = "Ans2 is required.")
 	private String que2;
 	
 	/**
 	 * Stores security question3's answer of user
 	 */
 	@Column(name="ans3")
+	@NotEmpty(message = "Ans3 is required.")
 	private String que3;
 	
 	/**
 	 * Stores all addresses of user in arraylist
 	 */
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@Valid
 	private List<AddressBean> address;
 	
 	/**
@@ -494,14 +516,6 @@ public class UserBean implements Serializable{
 	 */
 	public void setImage(byte[] image) {
 		this.image = image;
-	}
-
-	@Override
-	public String toString() {
-		return "UserBean [uid=" + uid + ", fname=" + fname + ", lname=" + lname + ", email=" + email + ", phone="
-				+ phone + ", password=" + password + ", gender=" + gender + ", birthdate=" + birthdate + ", hobby="
-				+ hobby + ", que1=" + que1 + ", que2=" + que2 + ", que3=" + que3 + ", type="
-				+ type + "]";
 	}
 	
 }

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -36,26 +37,31 @@ public class AddressBean implements Serializable{
 	/**
 	 * Stores home line of address
 	 */
+	@NotEmpty(message = "Home is required.")
 	private String home;
 	
 	/**
 	 * Stores city name of address
 	 */
+	@NotEmpty(message = "City is required.")
 	private String city;
 	
 	/**
 	 * Stores state line of address
 	 */
+	@NotEmpty(message = "State is required.")
 	private String state;
 	
 	/**
 	 * Stores country line of address
 	 */
+	@NotEmpty(message = "Country is required.")
 	private String country;
 	
 	/**
 	 * Stores pincode of address. String because some countries have Alpha-numeric pincode. exa, Canada, Argentina, etc.
 	 */
+	@NotEmpty(message = "Pincode is required.")
 	private String pincode;
 	
 	@ManyToOne

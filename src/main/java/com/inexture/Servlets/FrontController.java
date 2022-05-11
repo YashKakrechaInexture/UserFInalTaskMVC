@@ -2,15 +2,20 @@ package com.inexture.Servlets;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -62,12 +67,49 @@ public class FrontController {
 		}
 	}
 	
-//	@RequestMapping("/aids")
-//	@ResponseBody
-//	public String aids(@RequestParam String email) {
+	@PostMapping(path="/aids",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public String aids(@Valid @ModelAttribute UserBean u, BindingResult br,Model model,@RequestParam String password1,
+			@RequestParam String password2,@RequestParam(name="profilepic",required=false) MultipartFile filePart) {
 //		us.getaid(email);
 //		return "aids";
-//	}
+//		model.addAttribute("failuser",u);
+		if(br.hasErrors()) {
+			List<FieldError> error = br.getFieldErrors();
+//			String errors = "";
+			List<String> errors = new ArrayList<>();
+			for(FieldError f : error) {
+//				errors += f.getDefaultMessage() + "<br>";
+				errors.add(f.getDefaultMessage());
+			}
+//			model.addAttribute("failuser",u);
+			model.addAttribute("validerror",errors);
+			return "register";
+		}else {
+			
+			LOG.debug("User validated.");
+			
+			InputStream inputStream = null;
+			try {
+				if(null!=filePart && filePart.getSize()!=0) {
+					inputStream = filePart.getInputStream();
+				}
+			}catch(Exception e) {
+				LOG.error("Something went wrong! Exception : {}",e);
+			}
+			
+			LOG.debug("Got all the data from register page.");
+			
+			u.setPassword(password1);
+			
+			u.setInputStream(inputStream);
+			
+			us.registerUser(u);
+			
+			LOG.debug("User created.");
+			
+			return "index";
+		}
+	}
 	
 	@RequestMapping("/LoginServlet")
 	public String login(HttpServletRequest request,HttpSession session) {

@@ -34,3 +34,6 @@ html,body{
 	margin-top: 15px;
 	margin-bottom: 15px;
 }
+.error{
+	color: #ff0000;
+}
