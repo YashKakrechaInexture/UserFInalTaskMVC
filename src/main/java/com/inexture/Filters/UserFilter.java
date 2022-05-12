@@ -54,7 +54,7 @@ public class UserFilter implements Filter {
 		HttpSession session=req.getSession(false);  
 		if(session==null || session.getAttribute("user")==null) {
 			LOG.debug("Session is not active, redirecting to login page.");
-			res.sendRedirect("index.ftl");
+			res.sendRedirect("index");
 		}else {
 			LOG.debug("Session is active, let him pass.");
 	        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.

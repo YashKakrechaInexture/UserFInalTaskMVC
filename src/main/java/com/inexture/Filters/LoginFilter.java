@@ -69,7 +69,7 @@ public class LoginFilter implements Filter {
 	        if(u!=null) {
 	        	if( ("user").equals(u.getType()) ) {
 	        		LOG.debug("Session is active and its type user, redirecting to homepage.jsp.");
-	        		res.sendRedirect("homepage.ftl");
+	        		res.sendRedirect("homepage");
 	        	}else if( ("admin").equals(u.getType()) ) {
 	        		LOG.debug("Session is active and its type admin, redirecting to AdminServlet.");
 	        		res.sendRedirect("AdminServlet");
