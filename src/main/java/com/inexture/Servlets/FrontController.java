@@ -67,50 +67,6 @@ public class FrontController {
 		}
 	}
 	
-	@PostMapping(path="/aids",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public String aids(@Valid @ModelAttribute UserBean u, BindingResult br,Model model,@RequestParam String password1,
-			@RequestParam String password2,@RequestParam(name="profilepic",required=false) MultipartFile filePart) {
-//		us.getaid(email);
-//		return "aids";
-//		model.addAttribute("failuser",u);
-		if(br.hasErrors()) {
-			List<FieldError> error = br.getFieldErrors();
-//			String errors = "";
-			List<String> errors = new ArrayList<>();
-			for(FieldError f : error) {
-//				errors += f.getDefaultMessage() + "<br>";
-				errors.add(f.getDefaultMessage());
-			}
-//			model.addAttribute("failuser",u);
-			model.addAttribute("validerror",errors);
-			return "register";
-		}else {
-			
-			LOG.debug("User validated.");
-			
-			InputStream inputStream = null;
-			try {
-				if(null!=filePart && filePart.getSize()!=0) {
-					inputStream = filePart.getInputStream();
-				}
-			}catch(Exception e) {
-				LOG.error("Something went wrong! Exception : {}",e);
-			}
-			
-			LOG.debug("Got all the data from register page.");
-			
-			u.setPassword(password1);
-			
-			u.setInputStream(inputStream);
-			
-			us.registerUser(u);
-			
-			LOG.debug("User created.");
-			
-			return "index";
-		}
-	}
-	
 	@RequestMapping("/LoginServlet")
 	public String login(HttpServletRequest request,HttpSession session) {
 		
@@ -135,32 +91,24 @@ public class FrontController {
 			if(u.getType().equals("admin")) {
 				
 				LOG.info("User is admin, redirecting to admin page.");
-				//response.sendRedirect("AdminServlet");
 				return "redirect:AdminServlet";
 				
 			}else if (u.getType().equals("user")){
 				
 				LOG.info("User is normal user, redirecting to user home page.");
-				//response.sendRedirect("homepage.jsp");
 				return "redirect:homepage";
 				
 			}else {
 				
 				LOG.error("User found but its not user or admin");
-				//response.sendRedirect("index.jsp");
 				return "redirect:index";
 			}
 			
 		}else{
 			
 			LOG.info("No user found with given email and password, redirecting to login page.");
-//			out.print("Enter Correct Details");
-//			rd = request.getRequestDispatcher("index.jsp");
-//			rd.include(request, response);
 			return "redirect:index";
 		}
-		
-		//return "viewpage3"+email+" "+password;
 	}
 	
 	@RequestMapping("/AdminServlet")
@@ -168,12 +116,9 @@ public class FrontController {
 		
 		LOG.info("Inside Admin Servlet.");
 		
-//		UserInterface as = new UserService();
-		
 		LOG.debug("Adding User list to request attribute.");
 		
 		model.addAttribute("data", us.showUsers("user"));
-//		request.setAttribute("data", us.showUsers("user"));
 		
 		LOG.debug("Redirecting to Admin page.");
 		
@@ -193,7 +138,6 @@ public class FrontController {
 		}
 		
 		LOG.debug("Redirecting to login page.");
-//		response.sendRedirect("index.jsp");
 		return "index";
 		
 	}
@@ -203,7 +147,6 @@ public class FrontController {
 	public String AuthEmailServlet(@RequestParam String email,HttpSession session) {
 		LOG.debug("Inside Auth email servlet.");
 		
-//		UserInterface aes = new UserService();
 		if(!us.checkEmail(email)) {
 			LOG.info("Email exist in table.");
 			return "<span style=\"color:red;\">Email Already Taken.</span>";
@@ -222,7 +165,6 @@ public class FrontController {
 		
 		LOG.debug("User deleting service calling.");
 		
-//		UserInterface ds = new UserService();
 		us.deleteUser(uid);
 		
 		LOG.debug("User deleted, redirecting to admin servlet.");
@@ -240,10 +182,7 @@ public class FrontController {
 			LOG.debug("Session not null.");
 			
 			LOG.debug("Get email.");
-			
-//			UserBean u = new UserBean(email);
-			
-//			UserInterface es = new UserService();
+
 			UserBean u = us.editProfile(email);
 			
 			LOG.debug("Setting user bean to request attribute.");
@@ -270,11 +209,7 @@ public class FrontController {
 		
 		LOG.debug("Inside New Password Servlet.");
 		
-//		PrintWriter out = response.getWriter();
-//		response.setContentType("text/html");
-		
 		if(password1==null || password2==null || password1.equals("") || password2.equals("")) {
-//			out.print("<p>Password empty.</p>");
 			return "resetPassword";
 		}else {
 			if(password1.equals(password2)) {
@@ -300,14 +235,7 @@ public class FrontController {
 		
 		LOG.debug("Inside Reset Password Servlet.");
 		
-//		response.setContentType("text/html");
-//		PrintWriter out = response.getWriter();
-		
-//		UserBean u = new UserBean(email,birthdate,que1,que2,que3);
-		
 		LOG.debug("Got data and set in userbean.");
-		
-//		UserInterface fu = new UserService();
 		
 		if(us.findUser(u)) {
 			LOG.debug("User found, redirecting to new password page.");
@@ -319,7 +247,6 @@ public class FrontController {
 			return model;
 		}else {
 			LOG.debug("No user found, redirecting to reset password page.");
-//			out.print("No user found");
 			ModelAndView model = new ModelAndView("resetPassword");
 			model.addObject("error", "No user found");
 			return model;
@@ -331,83 +258,98 @@ public class FrontController {
 	public String RegisterServlet(@RequestParam String password1,
 									@RequestParam String password2,
 									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
-									@ModelAttribute UserBean user,
+									@Valid @ModelAttribute UserBean user,
+									BindingResult br,
 									HttpSession session,
 									HttpServletRequest request,
 									Model model) {
 		
 		LOG.debug("Inside Register Servlet.");
 		
-		InputStream inputStream = null;
-		try {
-			if(null!=filePart && filePart.getSize()!=0) {
-				inputStream = filePart.getInputStream();
+		if(br.hasErrors()) {
+			
+			LOG.debug("Inside has error.");
+			
+			List<FieldError> error = br.getFieldErrors();
+			List<String> errors = new ArrayList<>();
+			for(FieldError f : error) {
+				errors.add(f.getDefaultMessage());
 			}
-		}catch(Exception e) {
-			LOG.error("Something went wrong! Exception : {}",e);
-		}
-		
-		LOG.debug("Got all the data from register page.");
-		
-		user.setPassword(password1);
-		user.setInputStream(inputStream);
-		
-//		UserInterface rs = new UserService();
-		
-		if(null==filePart || filePart.getSize()==0){
-
-			LOG.debug("Image empty.");
-			model.addAttribute("failuser",user);
-			model.addAttribute("errormsg","Image is empty.");
-			
+			model.addAttribute("validerror",errors);
 			return "register";
+		}else {
 			
-		}else if(!Validation.validate(user)) {
-			
-			LOG.debug("Validation failed.");
-			model.addAttribute("failuser",user);
-			model.addAttribute("errormsg","Input Field is empty or too large or type mismatch.");
-			
-			return "register";
-			
-		}else if(!password1.equals(password2)) {
-			
-			LOG.debug("Password not matched.");
-			model.addAttribute("failuser",user);
-			model.addAttribute("errormsg","Password not matched.");
-			
-			return "register";
-			
-		}else {	
-			
-			LOG.debug("Validation passed, creating user.");
-			
-			session=request.getSession(false);  
-			
-			us.registerUser(user);
-			
-			LOG.debug("User created.");
-			
-			if(session!=null && session.getAttribute("user")!=null){
+			LOG.debug("User validated.");
 				
-				LOG.debug("Session is not null");
-				
-				UserBean olduser = (UserBean)session.getAttribute("user");
-				if(olduser.getType().equals("admin")) {
-					LOG.debug("Admin is true, redirecting to admin servlet.");
-					return "redirect:AdminServlet";
-				}else if(olduser.getType().equals("user")) {
-					LOG.debug("User session is active, redirecting to homepage.");
-					return "redirect:homepage";
-				}else {
-					LOG.error("Session is active but not user or admin found.");
-					return "redirect:register";
+			InputStream inputStream = null;
+			try {
+				if(null!=filePart && filePart.getSize()!=0) {
+					inputStream = filePart.getInputStream();
 				}
-			}else {
-				LOG.debug("Session is null, redirecting to login page.");
-				return "redirect:index";
+			}catch(Exception e) {
+				LOG.error("Something went wrong! Exception : {}",e);
 			}
 			
+			LOG.debug("Got all the data from register page.");
+			
+			user.setPassword(password1);
+			user.setInputStream(inputStream);
+			
+			if(null==filePart || filePart.getSize()==0){
+	
+				LOG.debug("Image empty.");
+				model.addAttribute("failuser",user);
+				model.addAttribute("errormsg","Image is empty.");
+				
+				return "register";
+				
+			}else if(!Validation.validate(user)) {
+				
+				LOG.debug("Validation failed.");
+				model.addAttribute("failuser",user);
+				model.addAttribute("errormsg","Input Field is empty or too large or type mismatch.");
+				
+				return "register";
+				
+			}else if(!password1.equals(password2)) {
+				
+				LOG.debug("Password not matched.");
+				model.addAttribute("failuser",user);
+				model.addAttribute("errormsg","Password not matched.");
+				
+				return "register";
+				
+			}else {	
+				
+				LOG.debug("Validation passed, creating user.");
+				
+				session=request.getSession(false);  
+				
+				us.registerUser(user);
+				
+				LOG.debug("User created.");
+				
+				if(session!=null && session.getAttribute("user")!=null){
+					
+					LOG.debug("Session is not null");
+					
+					UserBean olduser = (UserBean)session.getAttribute("user");
+					if(olduser.getType().equals("admin")) {
+						LOG.debug("Admin is true, redirecting to admin servlet.");
+						return "redirect:AdminServlet";
+					}else if(olduser.getType().equals("user")) {
+						LOG.debug("User session is active, redirecting to homepage.");
+						return "redirect:homepage";
+					}else {
+						LOG.error("Session is active but not user or admin found.");
+						return "redirect:register";
+					}
+				}else {
+					LOG.debug("Session is null, redirecting to login page.");
+					return "redirect:index";
+				}
+				
+			}
 		}
 	}
 	
@@ -469,29 +411,4 @@ public class FrontController {
 			}
 		}
 	}
-	
-//	@PostMapping(path="/UpdateServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	@ResponseBody
-//	public String UpdateServlet(@RequestParam(name="profilepic",required=false) MultipartFile filePart,
-//									@ModelAttribute UserBean user,
-//									HttpSession session,
-//									HttpServletRequest request,
-//									Model model) {
-//		
-////		List<AddressBean> address = user.getAddress()==null?null:user.getAddress();
-//		
-//		return user.toString();
-//	}
-	
-//	@PostMapping(path="/RegisterServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
-//	@ResponseBody
-//	public String RegisterServlet(@RequestParam String password1,
-//									@RequestParam String password2,
-//									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
-//									@ModelAttribute UserBean user,
-//									HttpSession session,
-//									HttpServletRequest request,
-//									Model model) {
-//		return user.toString();
-//	}
 }

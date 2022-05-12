@@ -22,7 +22,7 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-@WebFilter(urlPatterns = {"/index.jsp"})
+@WebFilter(urlPatterns = {"/index"})
 public class LoginFilter implements Filter {
 	/**
 	 * Logger

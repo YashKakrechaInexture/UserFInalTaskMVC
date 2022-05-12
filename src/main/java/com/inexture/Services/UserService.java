@@ -39,13 +39,6 @@ public class UserService implements UserInterface{
 	@Autowired
 	AddressBean address;
 	
-//	@Override
-//	public void getaid(String email) {
-////		dm.getAids(115);
-////		dm.checkUser(email);
-//		am.getAids(115);
-//	}
-	
 	@Override
 	public List<UserBean> showUsers(String type) {
 		

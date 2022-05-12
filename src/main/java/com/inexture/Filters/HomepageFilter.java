@@ -22,7 +22,7 @@ import com.inexture.Beans.UserBean;
  * @author Yash
  *
  */
-@WebFilter(urlPatterns = {"/homepage.jsp"})
+@WebFilter(urlPatterns = {"/homepage"})
 public class HomepageFilter implements Filter {
 	static final Logger LOG = Logger.getLogger(HomepageFilter.class);
     

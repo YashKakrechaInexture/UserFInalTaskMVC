@@ -13,7 +13,6 @@ import com.inexture.Beans.UserBean;
  */
 public interface UserInterface {
 	
-//	public void getaid(String email);
 	/**
 	 * It calls the User's list dao based on the given type from database table.
 	 * @param type - type of user (admin,user)
