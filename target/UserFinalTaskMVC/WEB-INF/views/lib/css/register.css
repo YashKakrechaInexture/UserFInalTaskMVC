@@ -3,7 +3,7 @@
 html,body{
 	margin: 0px;
 	padding: 0px;
-	background-image: url("/UserFinalTaskMVC/lib/images/bg.jpg");
+	background-image: url("https://i.ibb.co/TtLmb5y/bg.jpg");
 	background-repeat: no-repeat;
 	background-size: cover;
 }
@@ -33,4 +33,7 @@ html,body{
 .button-group{
 	margin-top: 15px;
 	margin-bottom: 15px;
+}
+.error{
+	color: #ff0000;
 }

@@ -27,13 +27,6 @@ public abstract class GenericDaoMethods<T> implements GenericDaoInterface<T>{
         
         LOG.debug("Generic Dao Class initialized and set type of class.");
 	}
-	
-	//public GenericDaoMethods() {}
-
-	public GenericDaoMethods(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
-	}
-
 
 	@Override
 	@Transactional
@@ -52,7 +45,7 @@ public abstract class GenericDaoMethods<T> implements GenericDaoInterface<T>{
 	@Override
 	public T read(Object uid) {
 		LOG.debug("Inside Generic Dao read method.");
-		return (T)this.hibernateTemplate.get(type,(int)uid);
+		return (T)this.hibernateTemplate.get(type,(Integer)uid);
 	}
 	
 	@Override
@@ -60,14 +53,6 @@ public abstract class GenericDaoMethods<T> implements GenericDaoInterface<T>{
 	public void delete(T user) {
 		LOG.debug("Inside Generic Dao delete method.");
 		this.hibernateTemplate.delete(user);
-	}
-
-	public HibernateTemplate getHibernateTemplate() {
-		return hibernateTemplate;
-	}
-
-	public void setHibernateTemplate(HibernateTemplate hibernateTemplate) {
-		this.hibernateTemplate = hibernateTemplate;
 	}
 	
 }

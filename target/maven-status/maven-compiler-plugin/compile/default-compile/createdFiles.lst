@@ -4,7 +4,6 @@ com\inexture\Services\UserService.class
 com\inexture\DAO\AddressDaoInterface.class
 com\inexture\DAO\DaoMethods.class
 com\inexture\Beans\AddressBean.class
-com\inexture\DAO\DaoConnectionClass.class
 com\inexture\Servlets\FrontController.class
 com\inexture\Utilities\Validation.class
 com\inexture\Filters\UserFilter.class

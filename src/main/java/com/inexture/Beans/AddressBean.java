@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +26,14 @@ import org.springframework.stereotype.Component;
 @Scope("prototype")
 public class AddressBean implements Serializable{
 	
+	/**
+	 * Logger
+	 */
+	static final Logger LOG = Logger.getLogger(AddressBean.class);
+	
+	/**
+	 * Serializable id
+	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -64,10 +73,16 @@ public class AddressBean implements Serializable{
 	@NotEmpty(message = "Pincode is required.")
 	private String pincode;
 	
+	/**
+	 * Stores uid in table as ManyToMany
+	 */
 	@ManyToOne
 	@JoinColumn(name = "uid")
 	private UserBean user;
 	
+	/**
+	 * Default constructor of address bean
+	 */
 	public AddressBean() {}
 	
 	/**
@@ -202,19 +217,20 @@ public class AddressBean implements Serializable{
 		return this.pincode;
 	}
 
+	/**
+	 * Getter method of UserBean user
+	 * @return UserBean - user bean object
+	 */
 	public UserBean getUser() {
-		return user;
+		return this.user;
 	}
 
+	/**
+	 * Setter method of UserBean user
+	 * @param user - User bean object
+	 */
 	public void setUser(UserBean user) {
 		this.user = user;
 	}
-
-	@Override
-	public String toString() {
-		return "AddressBean [aid=" + aid + ", home=" + home + ", city=" + city + ", state=" + state + ", country="
-				+ country + ", pincode=" + pincode + ", user=" + user + "]";
-	}
-	
 	
 }

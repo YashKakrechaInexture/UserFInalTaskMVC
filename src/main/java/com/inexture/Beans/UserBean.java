@@ -49,7 +49,6 @@ public class UserBean implements Serializable{
 	 */
 	@Column(name="firstname")
 	@NotEmpty(message = "Firstname is required.")
-//	@Pattern(regexp = "[a-zA-Z]+",message = "Firstname should not contain numbers.")
 	private String fname;
 	
 	/**
@@ -57,7 +56,6 @@ public class UserBean implements Serializable{
 	 */
 	@Column(name="lastname")
 	@NotEmpty(message = "Lastname is required.")
-//	@Pattern(regexp = "[a-zA-Z]+",message = "Lastname should not contain numbers.")
 	private String lname;
 	
 	/**
@@ -70,7 +68,6 @@ public class UserBean implements Serializable{
 	/**
 	 * Stores phone number of user
 	 */
-//	@NotEmpty(message = "Phone is required.")
 	private long phone;
 	
 	/**
@@ -341,7 +338,7 @@ public class UserBean implements Serializable{
 	 * @param address - Stores all addresses of user in arraylist
 	 */
 	public void setAddress(List<AddressBean> address) {
-		this.address = new ArrayList<AddressBean>(address);
+		this.address = address;
 	}
 	
 	/**
@@ -502,7 +499,7 @@ public class UserBean implements Serializable{
 	 * @return image - Stores image's byte array for storing in table
 	 */
 	public byte[] getImage() {
-		return image;
+		return this.image;
 	}
 	
 	/**

@@ -58,7 +58,7 @@ public class FrontController {
 	
 	@RequestMapping("/newPassword")
 	public String newPassword(@RequestParam String email,Model model) {
-		if(email==null || email=="") {
+		if(email==null || email.equals("")) {
 			model.addAttribute("error", "No user found");
 			return "resetPassword";
 		}else {
@@ -254,8 +254,8 @@ public class FrontController {
 		
 	}
 	
-	@PostMapping(path="/RegisterServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
-	public String RegisterServlet(@RequestParam String password1,
+	@PostMapping(path="/registerServlet",consumes= {MediaType.MULTIPART_FORM_DATA_VALUE})
+	public String registerServlet(@RequestParam String password1,
 									@RequestParam String password2,
 									@RequestParam(name="profilepic",required=false) MultipartFile filePart,
 									@Valid @ModelAttribute UserBean user,

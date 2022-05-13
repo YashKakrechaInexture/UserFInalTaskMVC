@@ -38,9 +38,10 @@
 			<div>
 				<h1 class="heading text-center">Registration Page</h1>
 			</div>
-			<form id="submitform" enctype="multipart/form-data" method="post" action="RegisterServlet">
+			<form id="submitform" enctype="multipart/form-data" method="post" action="registerServlet">
 		</#if> 
 			<div class="formpart">
+				<#if validerror??><span class="error">${validerror?join("<br>")}</span></#if>
 				<div class="row">
 					<div class="col-md-6">
 						<div class="form-group">
